@@ -33,3 +33,4 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net8.0\Orderflow.Identity.pdb
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net8.0\Orderflow.Identity.genruntimeconfig.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net8.0\ref\Orderflow.Identity.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net8.0\Orderflow.Identity.sourcelink.json

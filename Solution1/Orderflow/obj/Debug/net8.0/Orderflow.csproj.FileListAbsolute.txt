@@ -122,3 +122,5 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\r
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.pdb
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.genruntimeconfig.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\ref\Orderflow.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.NodeJs.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.sourcelink.json

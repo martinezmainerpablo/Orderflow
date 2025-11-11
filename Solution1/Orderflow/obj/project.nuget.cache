@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "BJPUb64aNIM=",
+  "dgSpecHash": "htrPA7UViWM=",
   "success": true,
   "projectFilePath": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow\\Orderflow.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Pablo\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\9.5.0\\aspire.dashboard.sdk.win-x64.9.5.0.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\aspire.hosting\\9.5.2\\aspire.hosting.9.5.2.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\aspire.hosting.apphost\\9.5.0\\aspire.hosting.apphost.9.5.0.nupkg.sha512",
+    "C:\\Users\\Pablo\\.nuget\\packages\\aspire.hosting.nodejs\\9.5.2\\aspire.hosting.nodejs.9.5.2.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.0\\aspire.hosting.orchestration.win-x64.9.5.0.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\aspire.hosting.postgresql\\9.5.2\\aspire.hosting.postgresql.9.5.2.nupkg.sha512",
     "C:\\Users\\Pablo\\.nuget\\packages\\aspnetcore.healthchecks.npgsql\\9.0.0\\aspnetcore.healthchecks.npgsql.9.0.0.nupkg.sha512",
