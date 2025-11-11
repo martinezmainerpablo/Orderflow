@@ -1,11 +1,22 @@
+using Aspire.Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Orderflow.Identity.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<IdentityDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("identitydb")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+      .AddEntityFrameworkStores<IdentityDbContext>();
 
 var app = builder.Build();
 
