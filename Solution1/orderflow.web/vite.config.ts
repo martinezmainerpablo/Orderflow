@@ -5,7 +5,7 @@ import plugin from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [plugin()],
     server: {
-        port: parseInt(process.env.PORT || '51909'),
+        port: Number.parseInt(process.env.PORT || '51909'),
         strictPort: true,
         host: true,
     }

@@ -5,6 +5,7 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\O
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Orderflow.pdb
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.AppHost.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.NodeJs.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.PostgreSQL.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\HealthChecks.NpgSql.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\HealthChecks.Uris.dll
@@ -116,11 +117,10 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\O
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.csproj.CoreCompileInputs.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Aspire\references\Orderflow_Identity.ProjectMetadata.g.cs
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Aspire\references\_AppHost.ProjectMetadata.g.cs
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.sourcelink.json
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.csproj.Up2Date
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\refint\Orderflow.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.pdb
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.genruntimeconfig.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\ref\Orderflow.dll
-C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\bin\Debug\net8.0\Aspire.Hosting.NodeJs.dll
-C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow\obj\Debug\net8.0\Orderflow.sourcelink.json

@@ -1,7 +1,8 @@
  var builder = DistributedApplication.CreateBuilder(args);
 
 //registra un servidor de Postgres
-var postgres = builder.AddPostgres("postgres");
+var postgres = builder.AddPostgres("postgres")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 //se añade una base de datos específica
 var identitydb = postgres.AddDatabase("identitydb");

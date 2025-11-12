@@ -1,8 +1,7 @@
-using Aspire.Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Orderflow.Identity.Data;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,17 +11,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<IdentityDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("identitydb")));
+//creo la instancia de los objetoss
+builder.AddNpgsqlDbContext<ApplicationDbContext>("identitydb");
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-      .AddEntityFrameworkStores<IdentityDbContext>();
+      .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    //
+   using var scope = app.Services.CreateScope();
+   var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+   await context.Database.MigrateAsync();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
