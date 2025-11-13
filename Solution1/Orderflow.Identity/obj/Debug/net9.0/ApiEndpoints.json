@@ -1,7 +1,23 @@
 [
   {
+    "ContainingType": "Orderflow.Identity.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Orderflow.Identity.DTOs.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Orderflow.Identity.Controllers.UsersController",
-    "Method": "CreateUserAsync",
+    "Method": "CreateUser",
     "RelativePath": "api/Users/creater",
     "HttpMethod": "POST",
     "IsController": true,

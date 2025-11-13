@@ -9,13 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
     <Compile Remove="Service\**" />
-    <Content Remove="Models\**" />
     <Content Remove="Service\**" />
-    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="Service\**" />
-    <None Remove="Models\**" />
     <None Remove="Service\**" />
   </ItemGroup>
 
