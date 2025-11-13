@@ -8,7 +8,7 @@ namespace Orderflow.Identity.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-
+        //faltan pasar el token
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
