@@ -9,7 +9,7 @@ namespace Orderflow.Identity.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            optionsBuilder.UseNpgsql("Host=localhost;Port=55529;Username=postgres;Password=!d+u0DrMk6KUd6WSdA{uW!;Database=identitydb");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=63938;Username=postgres;Password=!d+u0DrMk6KUd6WSdA{uW!;Database=identitydb");
 
             return new ApplicationDbContext (optionsBuilder.Options);
         }

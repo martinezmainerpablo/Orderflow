@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Orderflow.Identity")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dc71bccdc017d6d5eb9086acf3def342bb1773d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+238c907f7b8a2ae43d8ed23937af846bb1e22240")]
 [assembly: System.Reflection.AssemblyProductAttribute("Orderflow.Identity")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Orderflow.Identity")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,35 +1,61 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    // Validación básica
+    if (!email || !password) {
+      setError("Por favor, completa todos los campos.");
+      return;
+    }
+
+    // Aquí iría la lógica de autenticación (API, Firebase, etc.)
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    setError(""); // limpiar errores
+    alert("Inicio de sesión exitoso (simulado)");
+  };
+ return (
+    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+      <h2>Iniciar Sesión</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Introduce tu correo"
+            style={{ width: "100%", padding: "8px" }}
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Contraseña:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Introduce tu contraseña"
+            style={{ width: "100%", padding: "8px" }}
+          />
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <button type="submit" style={{ padding: "10px 20px" }}>
+          Entrar
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      </form>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
       </p>
-    </>
-  )
+    </div>
+  );
 }
-
 export default App

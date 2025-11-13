@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Orderflow.Identity.Data;
+using System.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,17 @@ builder.Services.AddSwaggerGen();
 //creo la instancia de los objetoss
 builder.AddNpgsqlDbContext<ApplicationDbContext>("identitydb");
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-      .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 8;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
@@ -32,6 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -162,10 +162,15 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\Orderflo.2A6C5D12.Up2Date
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\Orderflow.Identity.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\refint\Orderflow.Identity.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\Orderflow.Identity.pdb
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\Orderflow.Identity.genruntimeconfig.cache
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\ref\Orderflow.Identity.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
