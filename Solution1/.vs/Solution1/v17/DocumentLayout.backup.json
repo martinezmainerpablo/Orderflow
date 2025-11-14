@@ -38,8 +38,7 @@
               "RelativeToolTip": "Orderflow.Identity\\Data\\IdentityDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T17:30:52.222Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-13T17:30:52.222Z"
             },
             {
               "$type": "Document",
@@ -47,9 +46,9 @@
               "Title": "UsersController.cs",
               "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Orderflow.Identity\\Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs*",
-              "RelativeToolTip": "Orderflow.Identity\\Controllers\\UsersController.cs*",
-              "ViewState": "AgIAADYAAAAAAAAAAAAkwEgAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Orderflow.Identity\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAYwFkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-13T15:47:11.79Z",
               "EditorCaption": ""

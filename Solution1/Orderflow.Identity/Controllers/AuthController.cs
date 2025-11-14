@@ -1,0 +1,82 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace Orderflow.Identity.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+        private readonly ILogger<AuthController> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        //este es el contructor con los parametros que necesitamos
+        public AuthController(ILogger<AuthController> logger,
+            IConfiguration configuration,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
+        {
+            _logger = logger;
+            _configuration = configuration;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
+        //el usuario se pueda logear
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null) return Unauthorized();
+
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
+            if (!signInResult.Succeeded) return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = CreateAccessToken(user, roles);
+
+            return Ok(new { accessToken = token });
+        }
+
+        //metodo para crear el token de acceso
+        public string CreateAccessToken(IdentityUser user, IList<string> roles)
+        {
+            var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName ?? ""),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "")
+        };
+
+            // añadir roles como claims
+            foreach (var role in roles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(15),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
+
+    public record LoginDto()
+    {
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+    }
+
+}

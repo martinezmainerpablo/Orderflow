@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Orderflow.Identity.DTOs;
 
 
 namespace Orderflow.Identity.Controllers
@@ -12,16 +11,19 @@ namespace Orderflow.Identity.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
+        private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         //este es el contructor con los parametros que necesitamos
-        public UsersController(ILogger<UsersController> logger, 
+        public UsersController(ILogger<UsersController> logger,  
+            IConfiguration configuration,
             UserManager<IdentityUser> userManager, 
             SignInManager<IdentityUser> signInManager)
         {
 
             _logger = logger;
+            _configuration = configuration; 
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -64,12 +66,30 @@ namespace Orderflow.Identity.Controllers
         }
 
         //actualiza un usuario
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> Update(IdentityUser user)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, UserUpdateRequest request)
         {
+            //busca el id del usuario
+            var user = await _userManager.FindByIdAsync(id);
 
-            await _userManager.UpdateAsync(user);
-            return NoContent();
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            // Recogemos el nuevo nombre y la contraseña y la cambiamos
+            user.UserName = request.UserName;
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var passwordResult = await _userManager.ResetPasswordAsync(user, token, request.Password);
+
+            // Si hay algun error en el nombre o contraseña nos devuelve un error
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded || !passwordResult.Succeeded)
+            {
+                return BadRequest(updateResult.Errors);
+            }
+
+            return Ok("El usuario ha sido actualizado con exito");
         }
 
         //borra un usuario
@@ -85,25 +105,10 @@ namespace Orderflow.Identity.Controllers
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                return BadRequest("Error al borrar el usuario");
             }
 
-            return NoContent();
-        }
-
-        //el usuario se pueda logear
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user == null) return Unauthorized();
-
-            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
-            if (!signInResult.Succeeded) return Unauthorized();
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return Ok($"El usuario se ha logeado");
+            return Ok($"El usuario borrado con exito");
         }
     }
 
@@ -125,8 +130,8 @@ namespace Orderflow.Identity.Controllers
 
     }
 
-    //creamos un DTO para actualizar el usuario con los parametros que queremos
-    public record UserUpdateRequest
+    //creamos un DTO para actualizar el usuario con los parametros que queremos para las validaciones
+    public record UserUpdateRequest()
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }

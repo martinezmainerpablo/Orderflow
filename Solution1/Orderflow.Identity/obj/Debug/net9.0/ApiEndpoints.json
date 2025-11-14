@@ -29,13 +29,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "Microsoft.AspNetCore.Identity.IdentityUser",
-        "IsRequired": true
-      },
-      {
         "Name": "id",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
