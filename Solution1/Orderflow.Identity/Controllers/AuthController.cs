@@ -30,12 +30,12 @@ namespace Orderflow.Identity.Controllers
 
         //el usuario se pueda logear
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
+        public async Task<IActionResult> Login(LoginRequest login)
         {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
+            var user = await _userManager.FindByEmailAsync(login.Email);
             if (user == null) return Unauthorized();
 
-            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, lockoutOnFailure: true);
             if (!signInResult.Succeeded) return Unauthorized();
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -73,7 +73,7 @@ namespace Orderflow.Identity.Controllers
         }
     }
 
-    public record LoginDto()
+    public record LoginRequest()
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
