@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orderflow.Identity.DTOs;
 
 
 namespace Orderflow.Identity.Controllers
@@ -11,13 +13,18 @@ namespace Orderflow.Identity.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         //este es el contructor con los parametros que necesitamos
-       public UsersController(ILogger<UsersController> logger, UserManager<IdentityUser> userManager) { 
-        
-            _logger= logger;
-            _userManager= userManager;
-       }
+        public UsersController(ILogger<UsersController> logger, 
+            UserManager<IdentityUser> userManager, 
+            SignInManager<IdentityUser> signInManager)
+        {
+
+            _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
         //creamos la funcion crear al usuario
         [HttpPost("creater")]
@@ -55,79 +62,49 @@ namespace Orderflow.Identity.Controllers
             });
             
         }
-        /*
-        //actualizar un usuario
-        [HttpPost("update")]
-        public async Task<ActionResult> UpdateUser(IdentityUser request)
+
+        //actualiza un usuario
+        [HttpPut("{id}")] 
+        public async Task<IActionResult> Update(IdentityUser user)
         {
-            // Buscar el usuario por email
-            var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user == null)
-            {
-                _logger.LogWarning("Usuario no encontrado: {Email}", request.Email);
-                return NotFound(new UserCreationResponse
-                {
-                    Email = request.Email,
-                    Message = "Usuario no encontrado"
-                });
-            }
-
-            // Actualizamos los campos necesarios
-            user.UserName = request.UserName;
-            user.Email = request.Email;
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
-            {
-                _logger.LogError("Error al actualizar el usuario: {Errors}",
-                    string.Join(", ", result.Errors.Select(e => e.Description)));
-
-                return BadRequest(new UserCreationResponse
-                {
-                    Email = request.Email,
-                    Message = "Actualización fallida",
-                    Errors = result.Errors.Select(e => e.Description)
-                });
-            }
-
-            // Si también se quiere actualizar la contraseña
-            if (!string.IsNullOrEmpty(request.Password))
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var passwordResult = await _userManager.ResetPasswordAsync(user, token, request.Password);
-
-                if (!passwordResult.Succeeded)
-                {
-                    _logger.LogError("Error al actualizar la contraseña: {Errors}",
-                        string.Join(", ", passwordResult.Errors.Select(e => e.Description)));
-
-                    return BadRequest(new UserCreationResponse
-                    {
-                        Email = request.Email,
-                        Message = "Actualización de contraseña fallida",
-                        Errors = passwordResult.Errors.Select(e => e.Description)
-                    });
-                }
-            }
-
-            _logger.LogInformation("Usuario actualizado correctamente: {Email}", request.Email);
-
-            return Ok(new UserCreationResponse
-            {
-                Email = request.Email,
-                Message = "Usuario actualizado con éxito"
-            });
-        }
-
-        //borrar un usuario
-        [HttpPost("delete")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
+            await _userManager.UpdateAsync(user);
             return NoContent();
         }
-        */
+
+        //borra un usuario
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return NoContent();
+        }
+
+        //el usuario se pueda logear
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null) return Unauthorized();
+
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
+            if (!signInResult.Succeeded) return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return Ok($"El usuario se ha logeado");
+        }
     }
 
     //clase para poder monstrar los datos introducidos por el usuario
@@ -146,5 +123,12 @@ namespace Orderflow.Identity.Controllers
         public required string Email { get; set; }
         public required string Password { get; set; }
 
+    }
+
+    //creamos un DTO para actualizar el usuario con los parametros que queremos
+    public record UserUpdateRequest
+    {
+        public required string UserName { get; set; }
+        public required string Password { get; set; }
     }
 }

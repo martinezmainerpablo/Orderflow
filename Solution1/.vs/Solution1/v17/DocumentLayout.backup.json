@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -30,24 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 204,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T18:36:35.478Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "IdentityDbContext.cs",
               "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Data\\IdentityDbContext.cs",
               "RelativeDocumentMoniker": "Orderflow.Identity\\Data\\IdentityDbContext.cs",
@@ -60,20 +43,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "UsersController.cs",
               "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Orderflow.Identity\\Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAHUAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs*",
+              "RelativeToolTip": "Orderflow.Identity\\Controllers\\UsersController.cs*",
+              "ViewState": "AgIAADYAAAAAAAAAAAAkwEgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-13T15:47:11.79Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Program.cs",
               "RelativeDocumentMoniker": "Orderflow.Identity\\Program.cs",
@@ -85,7 +68,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "IdentityDbContextFactory.cs",
               "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Data\\IdentityDbContextFactory.cs",
               "RelativeDocumentMoniker": "Orderflow.Identity\\Data\\IdentityDbContextFactory.cs",

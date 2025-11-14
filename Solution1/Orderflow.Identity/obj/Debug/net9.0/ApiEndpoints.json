@@ -1,15 +1,41 @@
 [
   {
-    "ContainingType": "Orderflow.Identity.Controllers.AuthController",
-    "Method": "Login",
-    "RelativePath": "api/Auth/login",
-    "HttpMethod": "POST",
+    "ContainingType": "Orderflow.Identity.Controllers.UsersController",
+    "Method": "Update",
+    "RelativePath": "api/Users/{id}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "Orderflow.Identity.DTOs.LoginDto",
+        "Name": "user",
+        "Type": "Microsoft.AspNetCore.Identity.IdentityUser",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersController",
+    "Method": "Delete",
+    "RelativePath": "api/Users/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "Microsoft.AspNetCore.Identity.IdentityUser",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
         "IsRequired": true
       }
     ],
@@ -40,5 +66,21 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersController",
+    "Method": "Login",
+    "RelativePath": "api/Users/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Orderflow.Identity.DTOs.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
