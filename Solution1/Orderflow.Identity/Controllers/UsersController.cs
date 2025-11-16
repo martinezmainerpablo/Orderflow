@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace Orderflow.Identity.Controllers
-{
+namespace Orderflow.Identity.Controllers{
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -16,14 +15,14 @@ namespace Orderflow.Identity.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
 
         //este es el contructor con los parametros que necesitamos
-        public UsersController(ILogger<UsersController> logger,  
+        public UsersController(ILogger<UsersController> logger,
             IConfiguration configuration,
-            UserManager<IdentityUser> userManager, 
+            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
 
             _logger = logger;
-            _configuration = configuration; 
+            _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -41,9 +40,9 @@ namespace Orderflow.Identity.Controllers
             var result = await _userManager.CreateAsync(user, request.Password);
 
 
-            if(!result.Succeeded) {
+            if (!result.Succeeded) {
                 _logger.LogError("Error al crear el usuario: {Errors}",
-                    string.Join(", ", result.Errors.Select(e=> e.Description)));
+                    string.Join(", ", result.Errors.Select(e => e.Description)));
 
                 //devolvemos los errores en la respuesta 
                 return BadRequest(new UserCreationResponse
@@ -59,10 +58,10 @@ namespace Orderflow.Identity.Controllers
             //devolvemos el okey en la respuesta
             return Ok(new UserCreationResponse
             {
-                 Email = request.Email,
-                 Message = "Usuario creado con exito"
+                Email = request.Email,
+                Message = "Usuario creado con exito"
             });
-            
+
         }
 
         //actualiza un usuario
@@ -109,11 +108,11 @@ namespace Orderflow.Identity.Controllers
             }
 
             return Ok($"El usuario borrado con exito");
-        }
+        }        
     }
 
     //clase para poder monstrar los datos introducidos por el usuario
-    public record UserCreationResponse 
+    public record UserCreationResponse
     {
         public required string Email { get; set; }
         public required string Message { get; set; }
@@ -136,4 +135,6 @@ namespace Orderflow.Identity.Controllers
         public required string UserName { get; set; }
         public required string Password { get; set; }
     }
+   
 }
+

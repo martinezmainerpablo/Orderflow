@@ -45,7 +45,7 @@ namespace Orderflow.Identity.Controllers
         }
 
         //metodo para crear el token de acceso
-        public string CreateAccessToken(IdentityUser user, IList<string> roles)
+        private string CreateAccessToken(IdentityUser user, IList<string> roles)
         {
             var claims = new List<Claim>
         {
@@ -71,6 +71,8 @@ namespace Orderflow.Identity.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
     }
 
     public record LoginRequest()
@@ -78,5 +80,4 @@ namespace Orderflow.Identity.Controllers
         public required string Email { get; set; }
         public required string Password { get; set; }
     }
-
 }

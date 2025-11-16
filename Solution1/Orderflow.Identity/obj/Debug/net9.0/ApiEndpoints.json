@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "Orderflow.Identity.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "Orderflow.Identity.Controllers.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Orderflow.Identity.Controllers.UsersController",
     "Method": "Update",
     "RelativePath": "api/Users/{id}",
@@ -8,13 +24,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "Microsoft.AspNetCore.Identity.IdentityUser",
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": true
       },
       {
-        "Name": "id",
-        "Type": "",
+        "Name": "request",
+        "Type": "Orderflow.Identity.Controllers.UserUpdateRequest",
         "IsRequired": true
       }
     ],
@@ -61,21 +77,5 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "Orderflow.Identity.Controllers.UsersController",
-    "Method": "Login",
-    "RelativePath": "api/Users/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Orderflow.Identity.DTOs.LoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   }
 ]
