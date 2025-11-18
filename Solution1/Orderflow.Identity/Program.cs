@@ -28,6 +28,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
 /*
 //permitir poder acceder desde cualquier sitio
 builder.Services.AddCors(options => {
