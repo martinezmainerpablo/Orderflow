@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Register from "./Register";
 import "./Login.css";
 
 const Login: React.FC = () => {
@@ -11,7 +9,7 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7114/api/auth/login", {
+      const response = await fetch("https://localhost:7258/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -38,7 +36,6 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Router>
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h1>Iniciar sesión</h1>
@@ -70,17 +67,11 @@ const Login: React.FC = () => {
         <div className="form-actions">
           <button type="submit">Iniciar sesión</button>
           <p>
-            ¿No tienes cuenta? <Link to="/register">Registrarse</Link>
+            ¿No tienes cuenta? Iniciar sesion
           </p>
         </div>
       </form>
     </div>
-
-    {/* Definición de rutas */}
-      <Routes>
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
   );
 };
 

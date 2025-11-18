@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{17343F9C-CBD7-4F2E-A3B7-CBB1A63FA878}|Orderflow\\Orderflow.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17343F9C-CBD7-4F2E-A3B7-CBB1A63FA878}|Orderflow\\Orderflow.csproj|solutionrelative:orderflow\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 204,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppHost.cs",
+              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow\\AppHost.cs",
+              "RelativeDocumentMoniker": "Orderflow\\AppHost.cs",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow\\AppHost.cs",
+              "RelativeToolTip": "Orderflow\\AppHost.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-18T14:28:03.466Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +41,7 @@
               "RelativeDocumentMoniker": "Orderflow.Identity\\Program.cs",
               "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Program.cs",
               "RelativeToolTip": "Orderflow.Identity\\Program.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACMAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-11T17:05:35.874Z",
               "EditorCaption": ""

@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "../styles/estilos.css";
 
 const Register: React.FC = () => {
   const [nombre, setNombre] = useState("");
@@ -12,7 +9,7 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7114/api/auth/register", {
+      const response = await fetch("https://localhost:7258x/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ FullName: nombre, email, password }),

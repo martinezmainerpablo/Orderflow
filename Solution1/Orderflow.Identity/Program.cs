@@ -29,7 +29,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-/*
+
 //permitir poder acceder desde cualquier sitio
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => {
@@ -38,7 +38,7 @@ builder.Services.AddCors(options => {
               .AllowAnyMethod();
     });
 });
-*/
+
 
 var app = builder.Build();
 

@@ -15,7 +15,7 @@ var identityService= builder.AddProject<Projects.Orderflow_Identity>("orderflow-
 
 var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")   
                 .WithReference(identityService)  
-                .WithHttpEndpoint(port: 51909, env: "PORT")
+                .WithHttpEndpoint(port: 7000, env: "PORT")
                 .WithExternalHttpEndpoints()
                 .PublishAsDockerFile();
                 
