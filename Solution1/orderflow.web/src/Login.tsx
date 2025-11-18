@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Register from "./Register";
 import "./Login.css";
 
 const Login: React.FC = () => {
@@ -25,7 +27,7 @@ const Login: React.FC = () => {
       alert("Login correcto");
 
       // Redirige a corredores
-      window.location.href = "/corredores";
+      window.location.href = "/usuarios";
     } catch (err) {
       if (err instanceof Error) {
         alert("Error en el login: " + err.message);
@@ -36,6 +38,7 @@ const Login: React.FC = () => {
   };
 
   return (
+    <Router>
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h1>Iniciar sesión</h1>
@@ -67,11 +70,17 @@ const Login: React.FC = () => {
         <div className="form-actions">
           <button type="submit">Iniciar sesión</button>
           <p>
-            ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
+            ¿No tienes cuenta? <Link to="/register">Registrarse</Link>
           </p>
         </div>
       </form>
     </div>
+
+    {/* Definición de rutas */}
+      <Routes>
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 };
 

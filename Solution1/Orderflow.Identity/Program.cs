@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Orderflow.Identity.Data;
@@ -28,7 +28,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
-
+/*
 //permitir poder acceder desde cualquier sitio
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => {
@@ -37,13 +37,14 @@ builder.Services.AddCors(options => {
               .AllowAnyMethod();
     });
 });
+*/
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //migraciones autom�ticas
+    //migraciones automáticas
     using var scope = app.Services.CreateScope();
    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
    await context.Database.MigrateAsync();

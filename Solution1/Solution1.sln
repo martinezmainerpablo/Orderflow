@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orderflow", "Orderflow\Orde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orderflow.Identity", "Orderflow.Identity\Orderflow.Identity.csproj", "{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "orderflow.web", "Orderflow.Web\orderflow.web.esproj", "{C9DF4FB4-937E-AC9F-DE63-5881B49AE0DF}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "orderflow.web", "orderflow.web\orderflow.web.esproj", "{C9DF4FB4-937E-AC9F-DE63-5881B49AE0DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

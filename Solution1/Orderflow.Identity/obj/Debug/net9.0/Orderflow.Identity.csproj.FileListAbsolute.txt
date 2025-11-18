@@ -173,4 +173,7 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
