@@ -28,7 +28,7 @@ namespace Orderflow.Identity.Controllers
         }
 
         //mostrar todos los usuarios
-        //[Authorize(Roles = "ADMIN,USER")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public IActionResult GetAllUsers()
         {
