@@ -25,7 +25,7 @@ namespace Orderflow.Identity.Controllers
             _signInManager = signInManager;
         }
         [HttpGet("all")]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllRoles()
         {
             var roles = _rolManager.Roles.Select(r => new
             {
@@ -60,6 +60,7 @@ namespace Orderflow.Identity.Controllers
                 Message = "Role creado"
             });
         }
+
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteRole(RoleCreationRequest request)
         {

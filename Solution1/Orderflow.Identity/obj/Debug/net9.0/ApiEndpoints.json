@@ -33,7 +33,7 @@
   },
   {
     "ContainingType": "Orderflow.Identity.Controllers.RolesController",
-    "Method": "GetAllUsers",
+    "Method": "GetAllRoles",
     "RelativePath": "api/Roles/all",
     "HttpMethod": "GET",
     "IsController": true,
@@ -128,43 +128,6 @@
   },
   {
     "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
-    "Method": "Update",
-    "RelativePath": "api/UsersAdmin/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "Orderflow.Identity.Controllers.UserAdminUpdateRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
-    "Method": "Delete",
-    "RelativePath": "api/UsersAdmin/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
     "Method": "GetAllUsers",
     "RelativePath": "api/UsersAdmin/all",
     "HttpMethod": "GET",
@@ -176,7 +139,7 @@
   {
     "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
     "Method": "CreateUser",
-    "RelativePath": "api/UsersAdmin/creater",
+    "RelativePath": "api/UsersAdmin/Creater",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -198,5 +161,42 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "Delete",
+    "RelativePath": "api/UsersAdmin/Delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "Update",
+    "RelativePath": "api/UsersAdmin/Update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Orderflow.Identity.Controllers.UserAdminUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

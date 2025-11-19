@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Orderflow.Identity.Data;
+using Orderflow.Identity.Features.Auth;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -96,6 +97,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseCors();
@@ -105,6 +107,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//app.MapAuthGroup();
+//app.MapRegisterUser();
 
 app.Run();
 

@@ -28,7 +28,7 @@ namespace Orderflow.Identity.Controllers
         }
 
         //mostrar todos los usuarios
-        [Authorize(Roles = "ADMIN,USER")]
+        //[Authorize(Roles = "ADMIN,USER")]
         [HttpGet("all")]
         public IActionResult GetAllUsers()
         {
@@ -42,7 +42,7 @@ namespace Orderflow.Identity.Controllers
         }
 
         //mostrar un usuario por id
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -59,8 +59,8 @@ namespace Orderflow.Identity.Controllers
         }
 
         //creamos la funcion crear al usuario
-        [Authorize(Roles = "ADMIN")]
-        [HttpPost("creater")]
+        //[Authorize(Roles = "ADMIN")]
+        [HttpPost("Creater")]
         public async Task<ActionResult<UserAdminCreationRequest>> CreateUser(UserAdminCreationRequest request)
         {
 
@@ -102,8 +102,8 @@ namespace Orderflow.Identity.Controllers
         }
 
         //actualiza un usuario
-        [Authorize(Roles = "ADMIN")]
-        [HttpPut("{id}")]
+        //[Authorize(Roles = "ADMIN")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(string id, UserAdminUpdateRequest request)
         {
             //busca el id del usuario
@@ -131,8 +131,8 @@ namespace Orderflow.Identity.Controllers
         }
 
         //borra un usuario
-        [Authorize(Roles = "ADMIN")]
-        [HttpDelete("{id}")]
+        //[Authorize(Roles = "ADMIN")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

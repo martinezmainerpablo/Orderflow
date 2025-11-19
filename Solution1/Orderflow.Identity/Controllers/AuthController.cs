@@ -28,6 +28,7 @@ namespace Orderflow.Identity.Controllers
             _signInManager = signInManager;
         }
 
+        //registrar el usuario
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserCreationRequest dto)
         {

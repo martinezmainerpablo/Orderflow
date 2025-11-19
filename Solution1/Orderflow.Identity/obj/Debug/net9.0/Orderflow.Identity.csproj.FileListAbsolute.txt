@@ -177,3 +177,7 @@ C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Asp.Versioning.Abstractions.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Asp.Versioning.Http.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\bin\Debug\net9.0\Asp.Versioning.Mvc.dll
+C:\Users\Pablo\Documents\GitHub\Orderflow\Solution1\Orderflow.Identity\obj\Debug\net9.0\swae.build.ex.cache
