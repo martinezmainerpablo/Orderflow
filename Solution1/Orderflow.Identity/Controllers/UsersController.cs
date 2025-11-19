@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace Orderflow.Identity.Controllers{
@@ -12,28 +13,37 @@ namespace Orderflow.Identity.Controllers{
         private readonly ILogger<UsersController> _logger;
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
+        
         //este es el contructor con los parametros que necesitamos
         public UsersController(ILogger<UsersController> logger,
             IConfiguration configuration,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUser> userManager)
         {
 
             _logger = logger;
             _configuration = configuration;
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
+        //metodo para obtener el usuario desde los claims
+        private async Task<IdentityUser?> GetUserFromCLaims()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null) return user;
+            }
+            return null;
+        }
 
         //actualiza un usuario
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, UserUpdateRequest request)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(UserUpdateRequest request)
         {
             //busca el id del usuario
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await GetUserFromCLaims();
 
             if (user == null)
             {
@@ -56,10 +66,10 @@ namespace Orderflow.Identity.Controllers{
         }
 
         //borra un usuario
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete()
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await GetUserFromCLaims();
             if (user == null)
             {
                 return NotFound("Usuario no encontrado");
@@ -73,8 +83,6 @@ namespace Orderflow.Identity.Controllers{
 
             return Ok($"El usuario borrado con exito");
         }
-
-
     }
 
     //creamos un DTO para actualizar el usuario con los parametros que queremos para las validaciones

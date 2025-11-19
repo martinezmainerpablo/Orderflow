@@ -24,6 +24,8 @@ namespace Orderflow.Identity.Controllers
             _rolManager = rolManager;
             _signInManager = signInManager;
         }
+
+        //mostrar todos los roles
         [HttpGet("all")]
         public IActionResult GetAllRoles()
         {
@@ -35,6 +37,7 @@ namespace Orderflow.Identity.Controllers
             return Ok(roles);
         }
 
+        //crear un nuevo rol
         [HttpPost("create")]
         public async Task<IActionResult> CreateRole(RoleCreationRequest request)
         {
@@ -61,6 +64,7 @@ namespace Orderflow.Identity.Controllers
             });
         }
 
+        //eliminar un rol
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteRole(RoleCreationRequest request)
         {

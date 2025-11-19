@@ -38,7 +38,7 @@ namespace Orderflow.Identity.Controllers
            
             await _userManager.AddToRoleAsync(user, "User");
 
-            return Ok();
+            return Ok("Usuario registrado con exito");
         }
 
         //el usuario se pueda logear
@@ -62,9 +62,9 @@ namespace Orderflow.Identity.Controllers
         {
             var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.UserName ?? ""),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "")
+            new Claim(ClaimTypes.Email, user.Email ?? "")
         };
 
             // añadir roles como claims

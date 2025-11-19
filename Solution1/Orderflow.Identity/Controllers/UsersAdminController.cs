@@ -11,23 +11,20 @@ namespace Orderflow.Identity.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         //este es el contructor con los parametros que necesitamos
         public UsersAdminController(ILogger<UsersController> logger,
             IConfiguration configuration,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUser> userManager)
         {
 
             _logger = logger;
             _configuration = configuration;
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         //mostrar todos los usuarios
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public IActionResult GetAllUsers()
         {
@@ -149,6 +146,37 @@ namespace Orderflow.Identity.Controllers
             return Ok($"El usuario borrado con exito");
         }
 
+        //actualizo el rol de un usuario
+        //[Authorize(Roles = "ADMIN")]
+        [HttpPost("RemoveRol/{id}")]
+        public async Task<IActionResult> UpdateRol(string id, UserAdminUpdateRolRequest request)
+        {
+            // Buscar usuario por Id
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            // Obtener roles actuales del usuario
+            var rolUser = await _userManager.GetRolesAsync(user);
+
+            // Eliminar roles actuales
+            var borrarRol = await _userManager.RemoveFromRolesAsync(user, rolUser);
+            if (!borrarRol.Succeeded)
+            {
+                return BadRequest(borrarRol.Errors);
+            }
+
+            // Asignar nuevo rol
+            var userRol = await _userManager.AddToRoleAsync(user, request.rolName);
+            if (!userRol.Succeeded)
+            {
+                return BadRequest(userRol.Errors);
+            }
+
+            return Ok("El rol del usuario ha sido actualizado con éxito");
+        }
     }
 
     //clase para poder monstrar los datos introducidos por el usuario
@@ -180,4 +208,8 @@ namespace Orderflow.Identity.Controllers
         public required string Password { get; set; }
     }
 
+    public record UserAdminUpdateRolRequest
+    {
+        public required string rolName { get; set; }
+    }
 }

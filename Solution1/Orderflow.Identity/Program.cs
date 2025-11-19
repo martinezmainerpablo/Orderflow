@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Orderflow.Identity.Data;
 using Orderflow.Identity.Features.Auth;
+using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,28 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+builder.Services.AddAuthentication()
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true; //para guardar el token en la depuracion
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtKey)),
+            NameClaimType = ClaimTypes.NameIdentifier,
+            RoleClaimType = ClaimTypes.Role
+        };
+    });
+
 
 
 //permitir poder acceder desde cualquier sitio
@@ -70,6 +94,8 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -105,6 +131,7 @@ app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 
