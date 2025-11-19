@@ -3,24 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\features\\auth\\registeruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\features\\auth\\registeruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F82F1FC8-68AF-4873-A135-1C318C5EA232}|NewFolder1{F82F1FC8-68AF-4873-A135-1C318C5EA232}|C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Directory.Packages.props||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{F82F1FC8-68AF-4873-A135-1C318C5EA232}|NewFolder1{F82F1FC8-68AF-4873-A135-1C318C5EA232}|solutionrelative:Directory.Packages.props||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17343F9C-CBD7-4F2E-A3B7-CBB1A63FA878}|Orderflow\\Orderflow.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow\\orderflow.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{17343F9C-CBD7-4F2E-A3B7-CBB1A63FA878}|Orderflow\\Orderflow.csproj|solutionrelative:orderflow\\orderflow.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F82F1FC8-68AF-4873-A135-1C318C5EA232}|NewFolder1{F82F1FC8-68AF-4873-A135-1C318C5EA232}|C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{F82F1FC8-68AF-4873-A135-1C318C5EA232}|NewFolder1{F82F1FC8-68AF-4873-A135-1C318C5EA232}|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\features\\auth\\authgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\features\\auth\\authgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|c:\\users\\pablo\\documents\\github\\orderflow\\solution1\\orderflow.identity\\orderflow.identity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9F8CEC28-9A61-3D4E-8B8F-99A37B7CBF2F}|Orderflow.Identity\\Orderflow.Identity.csproj|solutionrelative:orderflow.identity\\orderflow.identity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,71 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 204,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RegisterUser.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Features\\Auth\\RegisterUser.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Features\\Auth\\RegisterUser.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Features\\Auth\\RegisterUser.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Features\\Auth\\RegisterUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T18:53:44.371Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AuthGroup.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Features\\Auth\\AuthGroup.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Features\\Auth\\AuthGroup.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Features\\Auth\\AuthGroup.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Features\\Auth\\AuthGroup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABLAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T18:43:14.483Z",
+              "DocumentIndex": 3,
+              "Title": "Orderflow.Identity",
+              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Orderflow.Identity.csproj",
+              "RelativeDocumentMoniker": "Orderflow.Identity\\Orderflow.Identity.csproj",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Orderflow.Identity.csproj",
+              "RelativeToolTip": "Orderflow.Identity\\Orderflow.Identity.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-19T15:52:20.572Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Program.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Program.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Program.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Program.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAmwDkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T17:05:35.874Z",
+              "Title": "Orderflow",
+              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow\\Orderflow.csproj",
+              "RelativeDocumentMoniker": "Orderflow\\Orderflow.csproj",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow\\Orderflow.csproj",
+              "RelativeToolTip": "Orderflow\\Orderflow.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-19T15:51:26.921Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T17:09:39.801Z",
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKEBAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-19T15:25:22.113Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Orderflow.Identity\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Orderflow.Identity\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Orderflow.Identity\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAgwBIAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T16:25:43.379Z",
+              "DocumentIndex": 0,
+              "Title": "Directory.Packages.props",
+              "DocumentMoniker": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Directory.Packages.props",
+              "RelativeDocumentMoniker": "Directory.Packages.props",
+              "ToolTip": "C:\\Users\\Pablo\\Documents\\GitHub\\Orderflow\\Solution1\\Directory.Packages.props",
+              "RelativeToolTip": "Directory.Packages.props",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-11-19T15:03:48.42Z",
               "EditorCaption": ""
             }
           ]
