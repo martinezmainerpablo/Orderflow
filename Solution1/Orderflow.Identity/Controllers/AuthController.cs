@@ -28,6 +28,18 @@ namespace Orderflow.Identity.Controllers
             _signInManager = signInManager;
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserCreationRequest dto)
+        {
+            var user = new IdentityUser { UserName = dto.UserName, Email = dto.Email};
+            var result = await _userManager.CreateAsync(user, dto.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+           
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return Ok();
+        }
+
         //el usuario se pueda logear
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest login)
@@ -75,9 +87,18 @@ namespace Orderflow.Identity.Controllers
 
     }
 
+    public record UserCreationRequest
+    {
+        public required string UserName { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+
+    }
     public record LoginRequest()
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
     }
+
+
 }

@@ -1,36 +1,34 @@
 import React, { useState } from "react";
+
 import "./Login.css";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7258/api/auth/login", {
+      const response = await fetch("https://localhost:7258/api/Auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        alert("Credenciales incorrectas");
+        setError("Datos incorrectas");
         return;
       }
 
       const data: { accessToken: string } = await response.json();
       localStorage.setItem("token", data.accessToken);
-      alert("Login correcto");
-
-      // Redirige a corredores
-      window.location.href = "/usuarios";
     } catch (err) {
       if (err instanceof Error) {
-        alert("Error en el login: " + err.message);
+        setError("Error en el login: " + err.message);
       } else {
-        alert("Error desconocido en el login");
+        setError("Error desconocido en el login");
       }
     }
   };
@@ -43,7 +41,7 @@ const Login: React.FC = () => {
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
-            type="text"
+            type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -64,10 +62,12 @@ const Login: React.FC = () => {
           />
         </div>
 
+        {error && <p className="error-message">{error}</p>}
+
         <div className="form-actions">
           <button type="submit">Iniciar sesión</button>
           <p>
-            ¿No tienes cuenta? Iniciar sesion
+            ¿No tienes cuenta? <a href="/Register">Regístrate</a>
           </p>
         </div>
       </form>

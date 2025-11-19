@@ -2,6 +2,7 @@
 
 //registra un servidor de Postgres
 var postgres = builder.AddPostgres("postgres")
+    .WithDataVolume(isReadOnly: false)
     .WithLifetime(ContainerLifetime.Persistent);
 
 //se añade una base de datos específica

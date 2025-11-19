@@ -1,0 +1,100 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Orderflow.Identity.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class RolesController : ControllerBase
+    {
+        private readonly ILogger<UsersController> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly RoleManager<IdentityRole> _rolManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        //este es el contructor con los parametros que necesitamos
+        public RolesController(ILogger<UsersController> logger,
+            IConfiguration configuration,
+            RoleManager<IdentityRole> rolManager,
+            SignInManager<IdentityUser> signInManager)
+        {
+
+            _logger = logger;
+            _configuration = configuration;
+            _rolManager = rolManager;
+            _signInManager = signInManager;
+        }
+        [HttpGet("all")]
+        public IActionResult GetAllUsers()
+        {
+            var roles = _rolManager.Roles.Select(r => new
+            {
+                r.Id,
+                r.Name,
+            }).ToList();
+            return Ok(roles);
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateRole(RoleCreationRequest request)
+        {
+            var role = new IdentityRole
+            {
+                Name = request.RoleName
+            };
+            var result = await _rolManager.CreateAsync(role);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Error al crear el rol: {Errors}",
+                    string.Join(", ", result.Errors.Select(e => e.Description)));
+                return BadRequest(new
+                {
+                    Message = "Fallo al crear el rol",
+                    Errors = result.Errors.Select(e => e.Description)
+                });
+            }
+            _logger.LogInformation("Role creo: {RoleName}", request.RoleName);
+            return Ok(new
+            {
+                RoleName = request.RoleName,
+                Message = "Role creado"
+            });
+        }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteRole(RoleCreationRequest request)
+        {
+            var role = await _rolManager.FindByNameAsync(request.RoleName);
+            if (role == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Role no encontrado"
+                });
+            }
+            var result = await _rolManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Error al eliminar el rol: {Errors}",
+                    string.Join(", ", result.Errors.Select(e => e.Description)));
+                return BadRequest(new
+                {
+                    Message = "Fallo al eliminar el rol",
+                    Errors = result.Errors.Select(e => e.Description)
+                });
+            }
+            _logger.LogInformation("Role eliminado: {RoleName}", request.RoleName);
+            return Ok(new
+            {
+                RoleName = request.RoleName,
+                Message = "Role eliminado"
+            });
+        }
+    }
+
+    public class RoleCreationRequest
+    {
+        public required string RoleName { get; set; }
+    }
+
+    
+}

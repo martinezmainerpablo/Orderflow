@@ -50,6 +50,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Asp.Versioning.Http": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Asp.Versioning.Mvc": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
             "Aspire.Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.5.2, )"

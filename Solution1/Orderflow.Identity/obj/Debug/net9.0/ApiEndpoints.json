@@ -16,6 +16,64 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Orderflow.Identity.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Orderflow.Identity.Controllers.UserCreationRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.RolesController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Roles/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.RolesController",
+    "Method": "CreateRole",
+    "RelativePath": "api/Roles/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Orderflow.Identity.Controllers.RoleCreationRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.RolesController",
+    "Method": "DeleteRole",
+    "RelativePath": "api/Roles/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Orderflow.Identity.Controllers.RoleCreationRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Orderflow.Identity.Controllers.UsersController",
     "Method": "Update",
     "RelativePath": "api/Users/{id}",
@@ -53,22 +111,85 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Orderflow.Identity.Controllers.UsersController",
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "GetUser",
+    "RelativePath": "api/UsersAdmin/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "Update",
+    "RelativePath": "api/UsersAdmin/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Orderflow.Identity.Controllers.UserAdminUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "Delete",
+    "RelativePath": "api/UsersAdmin/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/UsersAdmin/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Orderflow.Identity.Controllers.UsersAdminController",
     "Method": "CreateUser",
-    "RelativePath": "api/Users/creater",
+    "RelativePath": "api/UsersAdmin/creater",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "Orderflow.Identity.Controllers.UserCreationRequest",
+        "Type": "Orderflow.Identity.Controllers.UserAdminCreationRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Orderflow.Identity.Controllers.UserCreationResponse",
+        "Type": "Orderflow.Identity.Controllers.UserAdminCreationRequest",
         "MediaTypes": [
           "text/plain",
           "application/json",

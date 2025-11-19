@@ -27,42 +27,6 @@ namespace Orderflow.Identity.Controllers{
             _signInManager = signInManager;
         }
 
-        //creamos la funcion crear al usuario
-        [HttpPost("creater")]
-        public async Task<ActionResult<UserCreationResponse>> CreateUser(UserCreationRequest request) {
-
-            var user = new IdentityUser
-            {
-                UserName = request.UserName,
-                Email = request.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, request.Password);
-
-
-            if (!result.Succeeded) {
-                _logger.LogError("Error al crear el usuario: {Errors}",
-                    string.Join(", ", result.Errors.Select(e => e.Description)));
-
-                //devolvemos los errores en la respuesta 
-                return BadRequest(new UserCreationResponse
-                {
-                    Email = request.Email,
-                    Message = "Usuario failed",
-                    Errors = result.Errors.Select(e => e.Description)
-                });
-            }
-
-            _logger.LogInformation("user created successfully: {Email}", request.Email);
-
-            //devolvemos el okey en la respuesta
-            return Ok(new UserCreationResponse
-            {
-                Email = request.Email,
-                Message = "Usuario creado con exito"
-            });
-
-        }
 
         //actualiza un usuario
         [HttpPut("{id}")]
@@ -108,29 +72,11 @@ namespace Orderflow.Identity.Controllers{
             }
 
             return Ok($"El usuario borrado con exito");
-        }        
-    }
-
-    //clase para poder monstrar los datos introducidos por el usuario
-    public record UserCreationResponse
-    {
-        public required string Email { get; set; }
-        public required string Message { get; set; }
-        public IEnumerable<string>? Errors { get; set; }
-
-    }
-
-    //creamos la clase con los parametros que necesitamos para crear el usuario
-    public record UserCreationRequest
-    {
-        public required string UserName { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-
+        }
     }
 
     //creamos un DTO para actualizar el usuario con los parametros que queremos para las validaciones
-    public record UserUpdateRequest()
+    public record UserUpdateRequest
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }

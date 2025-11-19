@@ -26,7 +26,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Orderflow")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97b09b409d2970edbbc44347621772601ac42265")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48253f14e0a0d9a1b509ed55938dd834ad2e751d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Orderflow")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Orderflow")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
