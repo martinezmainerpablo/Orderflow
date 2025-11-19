@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Runtime.CompilerServices;
 
 namespace Orderflow.Identity.Features.Auth
 {
@@ -20,10 +21,18 @@ namespace Orderflow.Identity.Features.Auth
             return AuthGroup;
         }
 
-        private static async Task HandlerAsync(HttpContext context)
+        private static async Task<IResult> HandlerAsync(Request request, UserManager<IdentityUser> usermanager)
         {
+            var user = new IdentityUser
+            {
+                UserName = request.UserName,
+                Email = request.Email
+            };
 
-            throw new NotImplementedException();
+            var result = await usermanager.CreateAsync(user, request.Password);
+
+            return Results.Ok();
+
         }
     }
 }

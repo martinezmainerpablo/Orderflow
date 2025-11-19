@@ -13,7 +13,7 @@ namespace Orderflow.Identity.Features.Auth
                 .ReportApiVersions()
                 .Build();
 
-            var group = routes.MapGroup("/api/v{version: ApiVersion}/auth").WithTags("Auth");
+            var group = routes.MapGroup("/api/v{version: ApiVersion}/auth");
 
             group.WithApiVersionSet(versionSet);
             //nombre que creamos nosotros
