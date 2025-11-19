@@ -8,7 +8,6 @@ namespace Orderflow.Identity.Controllers
     [Route("api/[controller]")]
     public class UsersAdminController : ControllerBase
     {
-
         private readonly ILogger<UsersController> _logger;
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
@@ -180,4 +179,5 @@ namespace Orderflow.Identity.Controllers
         public required string Email { get; set; }
         public required string Password { get; set; }
     }
+
 }
