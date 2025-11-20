@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static Orderflow.Identity.DTOs.UserDTO;
 
 
 namespace Orderflow.Identity.Controllers{
@@ -103,19 +104,6 @@ namespace Orderflow.Identity.Controllers{
         }
     }
 
-    //creamos un DTO para actualizar el usuario con los parametros que queremos para las validaciones
-    public record UserUpdateRequest
-    {
-        public required string UserName { get; set; }
-        public required string Password { get; set; }
-    }
-   
-    public record UserResponse
-    {
-        public required string Id { get; set; }
-        public required string UserName { get; set; }
-        public required string Email { get; set; }
-        public required string NameRol { get; set; }
-    }
+
 }
 

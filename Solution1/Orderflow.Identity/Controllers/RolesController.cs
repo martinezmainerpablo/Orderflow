@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static Orderflow.Identity.DTOs.RolDTO;
 
 namespace Orderflow.Identity.Controllers
 {
@@ -96,11 +97,6 @@ namespace Orderflow.Identity.Controllers
                 Message = "Role eliminado"
             });
         }
-    }
-
-    public class RoleCreationRequest
-    {
-        public required string RoleName { get; set; }
     }
 
     

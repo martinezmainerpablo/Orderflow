@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static Orderflow.Identity.DTOs.LoginDTO;
 
 namespace Orderflow.Identity.Controllers
 {
@@ -86,19 +87,6 @@ namespace Orderflow.Identity.Controllers
         }
 
 
-    }
-
-    public record UserCreationRequest
-    {
-        public required string UserName { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-
-    }
-    public record LoginRequest()
-    {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
     }
 
 
