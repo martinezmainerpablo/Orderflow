@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Orderflow.Identity.Data;
 using static Orderflow.Identity.DTOs.UserAdminDTO;
 
 namespace Orderflow.Identity.Controllers

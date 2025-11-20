@@ -11,21 +11,15 @@ namespace Orderflow.Identity.Controllers
     public class RolesController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
-        private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _rolManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         //este es el contructor con los parametros que necesitamos
         public RolesController(ILogger<UsersController> logger,
-            IConfiguration configuration,
-            RoleManager<IdentityRole> rolManager,
-            SignInManager<IdentityUser> signInManager)
+            RoleManager<IdentityRole> rolManager)
         {
 
             _logger = logger;
-            _configuration = configuration;
             _rolManager = rolManager;
-            _signInManager = signInManager;
         }
 
         //mostrar todos los roles
