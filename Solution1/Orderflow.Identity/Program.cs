@@ -58,6 +58,24 @@ builder.Services.AddAuthentication(options =>
         NameClaimType = ClaimTypes.NameIdentifier,
         RoleClaimType = ClaimTypes.Role
     };
+    // Eventos para personalizar respuestas
+    options.Events = new JwtBearerEvents
+    {
+        OnForbidden = async context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync("No tienes permisos para acceder a este recurso");
+        },
+        OnChallenge = async context =>
+        {
+            // Esto se dispara cuando no hay token o es inválido
+            context.HandleResponse();
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync("Token inválido o no proporcionado");
+        }
+    };
 });
 
 builder.Services.AddAuthorization();

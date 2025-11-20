@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orderflow.Identity.Data;
 
 namespace Orderflow.Identity.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")] //solo el admin puede acceder a este controlador
     public class UsersAdminController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
@@ -24,21 +26,28 @@ namespace Orderflow.Identity.Controllers
         }
 
         //mostrar todos los usuarios
-        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = _userManager.Users.Select(u => new
+            var users = _userManager.Users.ToList();
+            var result = new List<object>();
+
+            foreach (var u in users)
             {
-                u.Id,
-                u.UserName,
-                u.Email
-            }).ToList();
-            return Ok(users);
+                var roles = await _userManager.GetRolesAsync(u);
+                result.Add(new
+                {
+                    u.Id,
+                    u.UserName,
+                    u.Email,
+                    NameRol = roles.FirstOrDefault() ?? ""
+                });
+            }
+
+            return Ok(result);
         }
 
         //mostrar un usuario por id
-        //[Authorize(Roles = "ADMIN")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -46,16 +55,18 @@ namespace Orderflow.Identity.Controllers
             if (user == null)
                 return NotFound("Usuario no encontrado");
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             return Ok(new
             {
                 user.Id,
                 user.UserName,
-                user.Email
+                user.Email,
+                Roles = roles // saca el primero rol que tenga el usuario o todos
             });
         }
 
         //creamos la funcion crear al usuario
-        //[Authorize(Roles = "ADMIN")]
         [HttpPost("Creater")]
         public async Task<ActionResult<UserAdminCreationRequest>> CreateUser(UserAdminCreationRequest request)
         {
@@ -98,7 +109,6 @@ namespace Orderflow.Identity.Controllers
         }
 
         //actualiza un usuario
-        //[Authorize(Roles = "ADMIN")]
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(string id, UserAdminUpdateRequest request)
         {
@@ -127,7 +137,6 @@ namespace Orderflow.Identity.Controllers
         }
 
         //borra un usuario
-        //[Authorize(Roles = "ADMIN")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -143,11 +152,10 @@ namespace Orderflow.Identity.Controllers
                 return BadRequest("Error al borrar el usuario");
             }
 
-            return Ok($"El usuario borrado con exito");
+            return Ok($"El usuario ha sido borrado con exito");
         }
 
         //actualizo el rol de un usuario
-        //[Authorize(Roles = "ADMIN")]
         [HttpPost("RemoveRol/{id}")]
         public async Task<IActionResult> UpdateRol(string id, UserAdminUpdateRolRequest request)
         {

@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace Orderflow.Identity.Controllers{
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
