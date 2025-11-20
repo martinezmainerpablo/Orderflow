@@ -25,7 +25,7 @@ namespace Orderflow.Identity.Controllers{
             _configuration = configuration;
             _userManager = userManager;
         }
-
+        
         //metodo para obtener el usuario desde los claims
         private async Task<IdentityUser?> GetUserFromCLaims()
         {
@@ -36,6 +36,23 @@ namespace Orderflow.Identity.Controllers{
                 if (user != null) return user;
             }
             return null;
+        }
+
+        [HttpGet("GetMe")]
+        public async Task<IActionResult> GetMe()
+        {
+            var user = await GetUserFromCLaims();
+            if (user == null) return Unauthorized("Token inválido o no proporcionado");
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(new
+            {
+                user.Id,
+                user.UserName,
+                user.Email,
+                NameRol = roles.FirstOrDefault() ?? "" // o devuelve la lista completa
+            });
         }
 
         //actualiza un usuario
@@ -92,5 +109,12 @@ namespace Orderflow.Identity.Controllers{
         public required string Password { get; set; }
     }
    
+    public record UserResponse
+    {
+        public required string Id { get; set; }
+        public required string UserName { get; set; }
+        public required string Email { get; set; }
+        public required string NameRol { get; set; }
+    }
 }
 
