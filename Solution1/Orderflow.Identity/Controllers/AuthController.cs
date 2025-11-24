@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Orderflow.Identity.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -42,6 +44,7 @@ namespace Orderflow.Identity.Controllers
             return Ok("Usuario registrado con exito");
         }
 
+
         //el usuario se pueda logear
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest login)
@@ -55,8 +58,16 @@ namespace Orderflow.Identity.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var token = CreateAccessToken(user, roles);
 
-            return Ok(new { accessToken = token });
+            var response = new LoginDTO.LoginResponse(
+                AccessToken: token,
+                TokenType: "Bearer",
+                UserId: user.Id,
+                Email: user.Email!,
+                Roles: roles
+);
+            return Ok(response);
         }
+
 
         //metodo para crear el token de acceso
         private string CreateAccessToken(IdentityUser user, IList<string> roles)
@@ -72,7 +83,7 @@ namespace Orderflow.Identity.Controllers
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

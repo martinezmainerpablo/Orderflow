@@ -5,7 +5,7 @@ var postgres = builder.AddPostgres("postgres")
     .WithDataVolume(isReadOnly: false)
     .WithLifetime(ContainerLifetime.Persistent);
 
-//se añade una base de datos específica
+//se aÃ±ade una base de datos especÃ­fica
 var identitydb = postgres.AddDatabase("identitydb");
 
 //microservicio
@@ -21,4 +21,6 @@ var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")
                 .PublishAsDockerFile();
                 
 
+
+            
 builder.Build().Run();
