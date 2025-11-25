@@ -5,6 +5,12 @@ var postgres = builder.AddPostgres("postgres")
     .WithDataVolume(isReadOnly: false)
     .WithLifetime(ContainerLifetime.Persistent);
 
+//registra un servidor de Redis
+var redis = builder.AddRedis("redis")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataVolume("redis-data-identity")
+    .WithRedisInsight();
+
 //se añade una base de datos específica
 var identitydb = postgres.AddDatabase("identitydb");
 
