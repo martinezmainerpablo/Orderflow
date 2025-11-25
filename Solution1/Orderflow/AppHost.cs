@@ -20,7 +20,5 @@ var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")
                 .WithExternalHttpEndpoints()
                 .PublishAsDockerFile();
                 
-
-
             
 builder.Build().Run();
