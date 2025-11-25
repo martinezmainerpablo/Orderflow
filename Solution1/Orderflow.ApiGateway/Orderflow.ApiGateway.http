@@ -1,0 +1,6 @@
+@Orderflow.ApiGateway_HostAddress = http://localhost:5142
+
+GET {{Orderflow.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

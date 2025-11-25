@@ -33,4 +33,7 @@
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Orderflow.ServiceDefaults\Orderflow.ServiceDefaults.csproj" />
+	</ItemGroup>
 </Project>

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Orderflow.ApiGateway\Orderflow.ApiGateway.csproj" />
     <ProjectReference Include="..\Orderflow.Identity\Orderflow.Identity.csproj" />
   </ItemGroup>
 

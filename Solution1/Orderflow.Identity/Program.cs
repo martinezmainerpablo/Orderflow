@@ -10,6 +10,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//añado los servicios por defecto
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 //para poder usar los secretos de usuario
