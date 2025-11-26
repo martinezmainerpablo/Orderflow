@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orderflow.Identity.DTOs;
 using static Orderflow.Identity.DTOs.RolDTO;
 
 namespace Orderflow.Identity.Controllers
@@ -36,8 +37,14 @@ namespace Orderflow.Identity.Controllers
 
         //crear un nuevo rol
         [HttpPost("create")]
-        public async Task<IActionResult> CreateRole(RoleCreationRequest request)
+        public async Task<IActionResult> CreateRole(RoleCreationRequest request,  
+           [FromServices] RoleCreationRequestValidator validator)
         {
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
             var role = new IdentityRole
             {
                 Name = request.RoleName

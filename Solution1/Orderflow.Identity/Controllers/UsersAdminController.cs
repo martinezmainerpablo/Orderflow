@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orderflow.Identity.DTOs;
 using static Orderflow.Identity.DTOs.UserAdminDTO;
 
 namespace Orderflow.Identity.Controllers
@@ -68,8 +69,15 @@ namespace Orderflow.Identity.Controllers
 
         //creamos la funcion crear al usuario
         [HttpPost("Creater")]
-        public async Task<ActionResult<UserAdminCreationRequest>> CreateUser(UserAdminCreationRequest request)
+        public async Task<ActionResult<UserAdminCreationRequest>> CreateUser(UserAdminCreationRequest request, 
+            [FromServices] UserAdminCreationRequestValidator validator)
         {
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
 
             var user = new IdentityUser
             {
@@ -110,7 +118,8 @@ namespace Orderflow.Identity.Controllers
 
         //actualiza un usuario
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Update(string id, UserAdminUpdateRequest request)
+        public async Task<IActionResult> Update(string id, UserAdminUpdateRequest request,
+            [FromServices] UserAdminUpdateRequestValidator validator)
         {
             //busca el id del usuario
             var user = await _userManager.FindByIdAsync(id);
@@ -119,6 +128,14 @@ namespace Orderflow.Identity.Controllers
             {
                 return NotFound("Usuario no encontrado");
             }
+
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
 
             // Recogemos el nuevo nombre y la contraseña y la cambiamos
             user.UserName = request.UserName;
@@ -157,13 +174,21 @@ namespace Orderflow.Identity.Controllers
 
         //actualizo el rol de un usuario
         [HttpPost("RemoveRol/{id}")]
-        public async Task<IActionResult> UpdateRol(string id, UserAdminUpdateRolRequest request)
+        public async Task<IActionResult> UpdateRol(string id, UserAdminUpdateRolRequest request,
+            [FromServices] UserAdminUpdateRolRequestValidator validator)
         {
             // Buscar usuario por Id
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound("Usuario no encontrado");
+            }
+
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             // Obtener roles actuales del usuario

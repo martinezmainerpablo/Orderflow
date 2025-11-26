@@ -1,12 +1,57 @@
 
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Orderflow.ApiGateway.Extensions;
+using RedisRateLimiting;
+using StackExchange.Redis;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+//Aspire.StackExchange.Redis
+builder.AddRedisClient("redis");
+
 builder.Services.AddYarpReverseProxy(builder.Configuration);
+
+//creamos la politica de cinco peticiones, a la 6 se bloquea durante 60s
+builder.Services.AddRateLimiter(rateLimiterOptions => {
+
+    rateLimiterOptions.AddPolicy("open", context =>
+    {
+        var redis = context.RequestServices.GetRequiredService<IConnectionMultiplexer>();
+        var ipAddress = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        return RedisRateLimitPartition.GetFixedWindowRateLimiter(
+            $"ip:{ipAddress}",
+            _ => new RedisFixedWindowRateLimiterOptions
+            {
+                ConnectionMultiplexerFactory = () => redis,
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1)
+            });
+
+    });
+});
+
+//jwt, para la autorizacion
+builder.Services.AddAuthentication();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
+                ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:SecretKey").Value!))
+            };
+        });
 
 builder.Services.AddGatewayCors();
 
@@ -22,11 +67,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors();
+
+app.UseAuthentication(); //añadir
+
 app.UseAuthorization();
 
-app.MapReverseProxy();
+//middleware for rate limiting
+app.UseRateLimiter();
 
-app.MapControllers();
+app.MapReverseProxy();
 
 app.Run();

@@ -33,10 +33,21 @@ namespace Orderflow.Identity.Controllers
 
         //registrar el usuario
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserCreationRequest dto)
+        public async Task<IActionResult> Register(UserCreationRequest dto ,
+            [FromServices] UserCreationRequestValidator validator)
         {
+            
+            var validationResult = await validator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var user = new IdentityUser { UserName = dto.UserName, Email = dto.Email};
+
             var result = await _userManager.CreateAsync(user, dto.Password);
+
             if (!result.Succeeded) return BadRequest(result.Errors);
            
             await _userManager.AddToRoleAsync(user, "User");

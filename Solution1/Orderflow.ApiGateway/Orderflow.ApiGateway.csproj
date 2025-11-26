@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.StackExchange.Redis" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
 
@@ -17,7 +18,8 @@
 	<PackageReference Include="RedisRateLimiting" />
 	<PackageReference Include="RedisRateLimiting.AspNetCore" />
 	<PackageReference Include="StackExchange.Redis" />
-	  
+
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />  
   </ItemGroup>
 
   <ItemGroup>

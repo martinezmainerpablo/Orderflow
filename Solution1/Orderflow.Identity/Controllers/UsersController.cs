@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Orderflow.Identity.DTOs;
 using System.Security.Claims;
 using static Orderflow.Identity.DTOs.UserDTO;
 
 
 namespace Orderflow.Identity.Controllers{
+
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
@@ -56,9 +58,43 @@ namespace Orderflow.Identity.Controllers{
             });
         }
 
-        //actualiza un usuario
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(UserUpdateRequest request)
+        //actualiza el nombre de un usuario
+        [HttpPatch("UpdateName")]
+        public async Task<IActionResult> UpdateName(UserUpdateNameRequest request,
+            [FromServices] UserUpdateNameRequestValidator validator)
+        {
+            //busca el id del usuario
+            var user = await GetUserFromCLaims();
+
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+
+            // Recogemos el nuevo nombre y la cambiamos
+            user.UserName = request.UserName;
+
+            // Si hay algun error en el nombre nos devuelve un error
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return BadRequest(updateResult.Errors);
+            }
+
+            return Ok("El usuario ha sido actualizado con exito");
+        }
+
+        //actualiza la contraseña de un usuario
+        [HttpPatch("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword(UserUpdatePasswordRequest request,
+            [FromServices] UserUpdatePasswordRequestValidator validator)
         {
             //busca el id del usuario
             var user = await GetUserFromCLaims();
@@ -68,14 +104,21 @@ namespace Orderflow.Identity.Controllers{
                 return NotFound("Usuario no encontrado");
             }
 
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             // Recogemos el nuevo nombre y la contraseña y la cambiamos
-            user.UserName = request.UserName;
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             var passwordResult = await _userManager.ResetPasswordAsync(user, token, request.Password);
 
             // Si hay algun error en el nombre o contraseña nos devuelve un error
             var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded || !passwordResult.Succeeded)
+            if (!passwordResult.Succeeded)
             {
                 return BadRequest(updateResult.Errors);
             }

@@ -28,8 +28,10 @@ var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")
                 
             
 builder.AddProject<Projects.Orderflow_ApiGateway>("orderflow-apigateway")
+        .WithReference(redis)  //añadimos redis al api gateway
         .WithReference(identity)
-    .WaitFor(identity); ;
+        .WaitFor(redis)      
+        .WaitFor(identity); ;
                 
             
 builder.Build().Run();

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Orderflow.Identity.Data;
+using Orderflow.Identity.DTOs;
 using System.Security.Claims;
 using System.Text;
 
@@ -12,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //añado los servicios por defecto
 builder.AddServiceDefaults();
+
+//añado las validaciones
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 
 // Add services to the container.
 
