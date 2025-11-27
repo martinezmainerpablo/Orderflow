@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 //añadir el AuthorizationPoliciesExtensions
-builder.Services.AddGatewayAuthorizationPolicies();
+//builder.Services.AddGatewayAuthorizationPolicies();
 
 
 builder.Services.AddGatewayCors();

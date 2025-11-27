@@ -22,6 +22,7 @@
 	  <PackageReference Include="EntityFramework" />
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+	  <PackageReference Include="MassTransit.RabbitMQ" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
@@ -39,5 +40,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Orderflow.ServiceDefaults\Orderflow.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\Orderflow.Shared\Orderflow.Shared.csproj" />
 	</ItemGroup>
 </Project>

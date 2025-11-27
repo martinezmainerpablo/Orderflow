@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,25 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 //para poder usar los secretos de usuario
 builder.Configuration.AddUserSecrets(typeof(Program).Assembly, true);
+
+// Add MassTransit with RabbitMQ
+
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        var configuration = context.GetRequiredService<IConfiguration>();
+        var connectionString = configuration.GetConnectionString("rabbitMQ");
+
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+
+            cfg.Host(new Uri(connectionString));
+        }
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 
 builder.Services.AddControllers();

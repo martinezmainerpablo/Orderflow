@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Orderflow.Identity.DTOs;
+using Orderflow.Shared;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,17 +20,20 @@ namespace Orderflow.Identity.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         //este es el contructor con los parametros que necesitamos
         public AuthController(ILogger<AuthController> logger,
             IConfiguration configuration,
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IPublishEndpoint publishEndpoint)
         {
             _logger = logger;
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
+            _publishEndpoint = publishEndpoint;
         }
 
         //registrar el usuario
@@ -47,6 +52,13 @@ namespace Orderflow.Identity.Controllers
             var user = new IdentityUser { UserName = dto.UserName, Email = dto.Email};
 
             var result = await _userManager.CreateAsync(user, dto.Password);
+
+            var userR = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (userR != null)
+            {
+                await _publishEndpoint.Publish(new UserCreateEvents(user.Id, user.Email!));
+            }
 
             if (!result.Succeeded) return BadRequest(result.Errors);
            

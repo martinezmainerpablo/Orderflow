@@ -16,7 +16,6 @@ namespace Orderflow.Identity.Controllers{
         private readonly ILogger<UsersController> _logger;
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
-
         
         //este es el contructor con los parametros que necesitamos
         public UsersController(ILogger<UsersController> logger,

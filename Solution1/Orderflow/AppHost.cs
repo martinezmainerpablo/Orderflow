@@ -27,7 +27,9 @@ var identitydb = postgres.AddDatabase("identitydb");
 //microservicio
 var identity= builder.AddProject<Projects.Orderflow_Identity>("orderflow-identity")
     .WaitFor(postgres)            //hasta que no lanzamos postgres no inicia la bd
-    .WithReference(identitydb);    //referencia a la base de datos
+    .WaitFor(rabbit)
+    .WithReference(identitydb)
+    .WithReference(rabbit);    //referencia a la base de datos
 
 
 var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")   
