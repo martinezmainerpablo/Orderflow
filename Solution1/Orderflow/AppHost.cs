@@ -1,4 +1,3 @@
-using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -18,7 +17,7 @@ var redis = builder.AddRedis("redis")
 var rabbit = builder
     .AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume("rabbit")
+    .WithDataVolume("rabbitMQ")
     .WithManagementPlugin();
 
 //se añade una base de datos específica
@@ -46,6 +45,11 @@ builder.AddProject<Projects.Orderflow_ApiGateway>("orderflow-apigateway")
             .WaitFor(redis)
             .WaitFor(rabbit)
             .WaitFor(identity);
+
+
+builder.AddProject<Projects.Orderflow_Notification>("orderflow-notification")
+    .WaitFor(rabbit)
+    .WithReference(rabbit);
 
 
 builder.Build().Run();
