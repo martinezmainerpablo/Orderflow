@@ -13,8 +13,8 @@ namespace Orderflow.Notification.Services
             message.From.Add(new MailboxAddress(
                 configuration["Email:FromName"] ?? "OrderFlow",
                 configuration["Email:FromAddress"] ?? "noreply@orderflow.local"));
-            message.To.Add(new MailboxAddress(displayName, toEmail));
-            message.Subject = "Bienvenido a OrderFlow!";
+                message.To.Add(new MailboxAddress(displayName, toEmail));
+                message.Subject = "Bienvenido a OrderFlow!";
 
             message.Body = new TextPart("html")
             {

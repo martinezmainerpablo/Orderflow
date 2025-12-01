@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orderflow.Shared", "Orderfl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orderflow.Notification", "Orderflow.Notification\Orderflow.Notification.csproj", "{A49002F3-A1CC-21B4-6367-741BF2F0CD24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orderflow.Catalog", "Orderflow.Catalog\Orderflow.Catalog.csproj", "{D07389A1-92DA-1431-488D-075721239D04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{A49002F3-A1CC-21B4-6367-741BF2F0CD24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A49002F3-A1CC-21B4-6367-741BF2F0CD24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A49002F3-A1CC-21B4-6367-741BF2F0CD24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07389A1-92DA-1431-488D-075721239D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07389A1-92DA-1431-488D-075721239D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07389A1-92DA-1431-488D-075721239D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07389A1-92DA-1431-488D-075721239D04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

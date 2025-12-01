@@ -8,7 +8,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.AddServiceDefaults();
 
 // Register EmailService
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 // Add MassTransit configuration
 builder.Services.AddMassTransit(x =>
