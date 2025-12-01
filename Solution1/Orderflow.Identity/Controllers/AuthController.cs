@@ -57,7 +57,7 @@ namespace Orderflow.Identity.Controllers
 
             if (userR != null)
             {
-                await _publishEndpoint.Publish(new UserCreateEvents(user.Id, user.Email!));
+                await _publishEndpoint.Publish(new UserCreateEvents(userR.Id, userR.UserName! ,userR.Email!));
             }
 
             if (!result.Succeeded) return BadRequest(result.Errors);

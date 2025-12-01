@@ -1,10 +1,14 @@
 using MassTransit;
-using Orderflow.Notification;
+using Orderflow.Notification.Consumer;
+using Orderflow.Notification.Services;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 // Add default service configurations
 builder.AddServiceDefaults();
+
+// Register EmailService
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add MassTransit configuration
 builder.Services.AddMassTransit(x =>
