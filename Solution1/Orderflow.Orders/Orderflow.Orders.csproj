@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7619f6d4-b3d4-4af1-9684-f32511b213d0</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Asp.Versioning.Http" />
+		<PackageReference Include="Asp.Versioning.Mvc" />
+		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Orderflow.ServiceDefaults\Orderflow.ServiceDefaults.csproj" />
+	</ItemGroup>
+
+</Project>
