@@ -8,6 +8,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//para poder usar los secretos de usuario
+builder.Configuration.AddUserSecrets(typeof(Program).Assembly, true);
+
 builder.Services.AddControllers();
 
 //Aspire.StackExchange.Redis
@@ -56,7 +59,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 //añadir el AuthorizationPoliciesExtensions
-//builder.Services.AddGatewayAuthorizationPolicies();
+builder.Services.AddGatewayAuthorizationPolicies();
 
 
 builder.Services.AddGatewayCors();
@@ -76,13 +79,11 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
-app.UseAuthentication(); //añadir
-
-app.UseAuthorization();
-
 //middleware for rate limiting
 app.UseRateLimiter();
 
-app.MapReverseProxy();
+app.UseAuthentication();
+app.UseAuthorization();
 
+app.MapReverseProxy();
 app.Run();

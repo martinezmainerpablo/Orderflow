@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Orderflow.Catalog.DTOs;
+﻿using Orderflow.Catalog.DTOs;
 
 namespace Orderflow.Catalog.Services
 {

@@ -8,7 +8,7 @@ namespace Orderflow.Identity.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")] //solo el admin puede acceder a este controlador
+    [Authorize(Roles = "Admin")] 
     public class RolesController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
