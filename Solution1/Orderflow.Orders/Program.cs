@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +20,24 @@ builder.Configuration.AddUserSecrets(typeof(Program).Assembly, true);
 
 // Add PostgreSQL DbContext
 builder.AddNpgsqlDbContext<OrdersDbContext>("ordersdb");
+
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        var configuration = context.GetRequiredService<IConfiguration>();
+        var connectionString = configuration.GetConnectionString("rabbitMQ");
+
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+
+            cfg.Host(new Uri(connectionString));
+        }
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 
 // Add services to the container.
 builder.Services.AddScoped<IOrderService, OrderService>();

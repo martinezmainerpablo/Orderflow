@@ -1,6 +1,7 @@
 using MassTransit;
 using Orderflow.Notification.Consumer;
 using Orderflow.Notification.Services;
+using Orderflow.Shared.Consumer;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddMassTransit(x =>
 {
     // Register consumers
     x.AddConsumer<UserRegisteredConsumer>();
+    x.AddConsumer<OrderCreatedConsumer>();
+    x.AddConsumer<OrderCancelledConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

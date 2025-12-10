@@ -1,15 +1,18 @@
 ﻿using MassTransit;
+using MassTransit.Transports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Orderflow.Orders.Class;
 using Orderflow.Orders.Data;
 using Orderflow.Orders.DTOs;
-using Orderflow.Orders.Class;
+using Orderflow.Shared.Events;
 
 
 namespace Orderflow.Orders.Services
 {
     public class OrderService(OrdersDbContext db,
         IHttpClientFactory httpClientFactory,
+        IPublishEndpoint publishEndpoint,
         ILogger<OrderService> logger) : IOrderService
     {
         private record ProductInfo(int Id, string Name, decimal Price, int Stock, bool IsActive);
@@ -146,6 +149,14 @@ namespace Orderflow.Orders.Services
 
             logger.LogInformation("Order created: {OrderId} for user {UserId}", order.IdOrder, userId);
 
+            var orderCreatedEvent = new OrderCreatedEvent(
+                order.IdOrder,
+                userId,
+                orderItems.Select(i => new OrderItemEvent(i.ProductId, i.ProductName, i.Units)));
+
+            await publishEndpoint.Publish(orderCreatedEvent);
+
+
             return OrderResponse.Success(MapToResponse(order));
         }
 
@@ -169,6 +180,13 @@ namespace Orderflow.Orders.Services
             await db.SaveChangesAsync();
 
             logger.LogInformation("Order {OrderId} cancelled by user {UserId}.", orderId, userId);
+
+            var orderCancelledEvent = new OrderCancelledEvent(
+                order.IdOrder,
+                userId,
+                order.Items.Select(i => new OrderItemEvent(i.ProductId, i.ProductName, i.Units)));
+
+             await publishEndpoint.Publish(orderCancelledEvent);
 
             // Devolver IActionResult con el DTO mapeado
             return new OkObjectResult(MapToResponse(order));
