@@ -36,28 +36,22 @@ namespace Orderflow.Orders.Controllers
         {
             var result = await orderService.UpdateStatusAsync(id, request.Status);
 
-            // 1. Manejo de nulo (Defensa, aunque raro en Task<T>)
             if (result == null)
             {
                 return StatusCode(500, "Error interno: El servicio de órdenes devolvió un resultado nulo.");
             }
 
-            // 2. Evaluación de Fallo
             if (!result.IsSuccess)
             {
-                // 3. Inspección del Mensaje para el 404
                 if (result.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
                 {
-                    return NotFound(); // Retorna 404
+                    return NotFound(); 
                 }
 
-                // 4. Retorno de Error General (400 Bad Request)
-                // Usamos result.Message directamente
                 return BadRequest(result.Message);
             }
 
-            // 5. Éxito
-            return NoContent(); // 204 No Content, estándar para actualizaciones
+            return Ok("Estado actualizado");
         }
     }
 }
