@@ -1,6 +1,6 @@
 ﻿using OrderFlowClase.Shared.Events;
 
-namespace Orderflow.Shared
+namespace Orderflow.Shared.Events
 {
     public sealed record UserCreateEvents(string userId, string firstName, string email) : IUserCreateEvent
     {

@@ -1,10 +1,9 @@
 ﻿using MassTransit;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Orderflow.Identity.DTOs;
-using Orderflow.Shared;
+using Orderflow.Shared.Events;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

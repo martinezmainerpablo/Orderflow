@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Orderflow.Notification.Services;
-using Orderflow.Shared;
+using Orderflow.Shared.Events;
 
 namespace Orderflow.Notification.Consumer
 {
