@@ -15,8 +15,8 @@ namespace Orderflow.Orders.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    IdOrder = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
                     TotalAmount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     ShippingAddress = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Notes = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
@@ -26,7 +26,7 @@ namespace Orderflow.Orders.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.IdOrder);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,7 +47,7 @@ namespace Orderflow.Orders.Migrations
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "Id",
+                        principalColumn: "IdOrder",
                         onDelete: ReferentialAction.Cascade);
                 });
 

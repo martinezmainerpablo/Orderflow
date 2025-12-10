@@ -2,8 +2,8 @@
 {
     public class Order
     {
-        public Guid Id { get; set; }
-        public string UserId { get; set; } = string.Empty;
+        public Guid IdOrder { get; set; } = Guid.NewGuid();
+        public Guid UserId { get; set; } 
         public decimal TotalAmount { get; set; }
         public string ShippingAddress { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;

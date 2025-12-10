@@ -1,18 +1,52 @@
-body {
-  background-color: #f8f9fa;
+.register-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Un gradiente ligeramente diferente para distinguirlo o igual si prefieres consistencia */
+  background: linear-gradient(135deg, var(--sky-aqua) 0%, var(--light-cyan) 100%);
 }
 
-h2 {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  font-weight: bold;
+.register-container {
+  width: 100%;
+  max-width: 450px; /* Un poco más ancho para el registro */
+  padding: 2.5rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(2, 62, 138, 0.15); /* Sombra tono french-blue */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.navbar {
-  margin-bottom: 20px;
+.register-title {
+  font-weight: 700;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: var(--deep-twilight);
 }
 
-button.btn-primary {
-  padding: 10px 20px;
-  font-size: 16px;
+.register-btn {
+  margin-top: 1.5rem;
+  padding: 12px 0;
+  width: 100%;
+  background-color: var(--bright-teal-blue); 
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.register-btn:hover {
+  background-color: var(--french-blue);
+  box-shadow: 0 4px 10px rgba(0, 119, 182, 0.3);
+}
+
+.register-btn:disabled {
+  background-color: var(--frosted-blue);
+  cursor: not-allowed;
 }

@@ -3,13 +3,12 @@ using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models; 
+using Microsoft.OpenApi.Models;
 using Orderflow.Catalog.Data;
 using Orderflow.Catalog.Services;
 using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http; 
-
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +20,20 @@ builder.Configuration.AddUserSecrets(typeof(Program).Assembly, true);
 // Add PostgreSQL DbContext
 builder.AddNpgsqlDbContext<CatalogDbContext>("categorydb");
 
+// ---------------------------------------------------------
+// 1. AGREGAR SERVICIO CORS (NUEVO)
+// ---------------------------------------------------------
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:7000") // El puerto exacto de tu error CORS
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+// ---------------------------------------------------------
 
 // Add services to the container.
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -103,7 +116,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = true, 
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -158,6 +171,13 @@ if (app.Environment.IsDevelopment())
 app.MapDefaultEndpoints();
 
 app.UseHttpsRedirection();
+
+// ---------------------------------------------------------
+// 2. ACTIVAR CORS (NUEVO)
+// ¡Importante! Debe ir ANTES de UseAuthentication y UseAuthorization
+// ---------------------------------------------------------
+app.UseCors("AllowFrontend");
+// ---------------------------------------------------------
 
 app.UseAuthentication();
 

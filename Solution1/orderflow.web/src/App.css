@@ -1,42 +1,184 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --deep-twilight: #03045eff;
+  --french-blue: #023e8aff;
+  --bright-teal-blue: #0077b6ff;
+  --blue-green: #0096c7ff;
+  --turquoise-surf: #00b4d8ff;
+  --sky-aqua: #48cae4ff;
+  --frosted-blue: #90e0efff;
+  --frosted-blue-2: #ade8f4ff;
+  --light-cyan: #caf0f8ff;
+  --danger: #ef476f;
+  --success: #06d6a0;
+}
+
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--light-cyan);
+  margin: 0;
+  color: var(--deep-twilight);
+}
+
+/* --- Botones --- */
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.btn-primary { background-color: var(--french-blue); color: white; }
+.btn-primary:hover { background-color: var(--deep-twilight); transform: translateY(-1px); }
+
+.btn-secondary { background-color: var(--sky-aqua); color: var(--deep-twilight); }
+.btn-secondary:hover { background-color: var(--turquoise-surf); }
+
+.btn-danger { background-color: var(--danger); color: white; }
+.btn-outline { background: transparent; border: 2px solid var(--french-blue); color: var(--french-blue); }
+.btn-outline:hover { background: var(--frosted-blue-2); }
+
+/* --- Formularios --- */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 2px solid var(--frosted-blue);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input-field:focus { border-color: var(--french-blue); }
+
+/* --- Pantalla de Login --- */
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--deep-twilight) 0%, var(--french-blue) 100%);
+}
+.login-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* --- Navbar (Menú Superior) --- */
+.navbar {
+  background-color: var(--deep-twilight);
+  color: white;
+  padding: 0 2rem;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.nav-brand { font-size: 1.5rem; font-weight: 700; color: var(--sky-aqua); cursor: pointer; letter-spacing: -0.5px; }
+.nav-items { display: flex; gap: 20px; align-items: center; }
+.nav-link { color: var(--frosted-blue); cursor: pointer; font-weight: 500; transition: color 0.2s; }
+.nav-link:hover { color: white; }
+
+/* --- Menú de Usuario --- */
+.user-menu-container { position: relative; }
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.user-badge:hover { background: rgba(255,255,255,0.2); }
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  width: 200px;
+  display: none; /* Se muestra con hover en el padre */
+  flex-direction: column;
+  overflow: hidden;
+}
+.user-menu-container:hover .dropdown { display: flex; }
+
+.dropdown-item {
+  padding: 12px 16px;
+  color: var(--deep-twilight);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--light-cyan);
+  text-align: left;
+  cursor: pointer;
+}
+.dropdown-item:hover { background-color: var(--frosted-blue-2); }
+
+/* --- Grid de Productos (Catálogo) --- */
+.main-content { padding-bottom: 2rem; }
+
+.grid-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.card {
-  padding: 2em;
+.product-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(3, 4, 94, 0.1);
+  border-color: var(--bright-teal-blue);
 }
 
-.read-the-docs {
-  color: #888;
+.product-image {
+  height: 180px;
+  background: var(--light-cyan);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--french-blue);
+  font-size: 3rem;
+}
+
+/* --- Vista Detalle --- */
+.detail-view { 
+  max-width: 1000px; 
+  margin: 2rem auto; 
+  padding: 2rem; 
+  background: white; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
 }

@@ -24,7 +24,7 @@ namespace Orderflow.Orders.Migrations
 
             modelBuilder.Entity("Orderflow.Orders.Class.Order", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("IdOrder")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -53,12 +53,11 @@ namespace Orderflow.Orders.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<Guid>("UserId")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdOrder");
 
                     b.HasIndex("CreatedAt");
 

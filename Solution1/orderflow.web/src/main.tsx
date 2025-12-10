@@ -1,10 +1,11 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './Login.css'
-import App from './Login.tsx'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+// IMPORTANTE: Esta línea carga tus variables de color (--deep-twilight, etc.)
+import './CSS/colores.css' 
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <App />
-  </StrictMode>,
+  </React.StrictMode>,
 )

@@ -15,7 +15,7 @@ namespace Orderflow.Orders.Data
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.HasKey(e => e.Id);
+                entity.HasKey(e => e.IdOrder);
                 entity.Property(e => e.UserId).HasMaxLength(100).IsRequired();
                 entity.Property(e => e.TotalAmount).HasPrecision(18, 2);
                 entity.Property(e => e.ShippingAddress).HasMaxLength(500);
