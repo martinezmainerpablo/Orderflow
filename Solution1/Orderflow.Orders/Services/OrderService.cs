@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using MassTransit.Transports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orderflow.Orders.Class;
@@ -273,15 +272,15 @@ namespace Orderflow.Orders.Services
         }
 
 
-        private async Task ReleaseReservedStockAsync(HttpClient catalogClient, List<(Guid ProductId, int Quantity)> reservedItems)
+        private async Task ReleaseReservedStockAsync(HttpClient catalogClient, List<(Guid ProductId, int Units)> reservedItems)
         {
-            foreach (var (productId, quantity) in reservedItems)
+            foreach (var (productId, units) in reservedItems)
             {
                 try
                 {
                     await catalogClient.PostAsJsonAsync(
                         $"/api/v1/products/{productId}/release",
-                        new { Quantity = quantity });
+                        new { Units = units });
                 }
                 catch (Exception ex)
                 {

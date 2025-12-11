@@ -8,7 +8,7 @@
         public required decimal Price { get; set; }
         public required int Stock { get; set; }
         public bool IsActive { get; set; } = true;
-
+        public DateTime? UpdatedAt { get; set; }
 
         public Guid CategoryId { get; set; }
         public Category? Category { get; set; }

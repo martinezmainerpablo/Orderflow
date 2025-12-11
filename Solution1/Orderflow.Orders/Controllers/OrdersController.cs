@@ -25,7 +25,7 @@ namespace Orderflow.Orders.Controllers
             return userIdGuid;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<OrderListResponse>>> GetUserOrders()
         {
             var userIdResult = GetUserIdFromClaims();
@@ -40,7 +40,7 @@ namespace Orderflow.Orders.Controllers
             return Ok(orders); 
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("GetOrder/{id:guid}")]
         public async Task<ActionResult<OrderResponse>> GetOrderById(Guid id)
         {
             var userIdResult = GetUserIdFromClaims();
@@ -60,7 +60,7 @@ namespace Orderflow.Orders.Controllers
             return Ok(order); 
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<OrderResponse>> CreateOrder(CreateOrderRequest request)
         {
             var userIdResult = GetUserIdFromClaims();

@@ -23,6 +23,7 @@ namespace Orderflow.Identity.Data
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(adminUser, "ADMIN");
+                    await userManager.AddToRoleAsync(adminUser, "USER");
                     Console.WriteLine("Usuario administrador creado correctamente.");
                 }
                 else

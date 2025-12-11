@@ -45,7 +45,7 @@ export default function Index({ userEmail = "Usuario", onLogout }: HomeProps) {
           }
         });
 
-        // 3. MANEJO DE RESPUESTAS
+        // 3. MANEJO DE RESPUESTASa
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
