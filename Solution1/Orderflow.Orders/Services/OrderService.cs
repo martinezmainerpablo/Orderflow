@@ -78,7 +78,7 @@ namespace Orderflow.Orders.Services
 
                 try
                 {
-                    var response = await catalogClient.GetAsync($"/api/v1/products/{item.ProductId}");
+                    var response = await catalogClient.GetAsync($"/api/v1/products/getproduct/{item.ProductId}");
 
                     if (!response.IsSuccessStatusCode)
                     {

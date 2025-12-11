@@ -23,6 +23,8 @@ builder.AddNpgsqlDbContext<CatalogDbContext>("categorydb");
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductoService>();
+builder.Services.AddScoped<IStockService, StockService>();
+
 
 builder.Services.AddApiVersioning(options =>
 {

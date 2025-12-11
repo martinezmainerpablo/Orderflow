@@ -7,7 +7,7 @@ namespace Orderflow.Catalog.Controllers
 {
     [ApiController]
     [Route("/api/v{version:apiVersion}/[controller]")]
-    public class ProductsController(IProductService _productService) : ControllerBase
+    public class ProductsController(IProductService _productService, IStockService _stockService) : ControllerBase
     {
 
         [HttpGet("GetAll")]
@@ -23,7 +23,7 @@ namespace Orderflow.Catalog.Controllers
             return Ok(products);
         }
 
-        [HttpGet("GetProduct")]
+        [HttpGet("GetProduct/{id:Guid}")]
         [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<ProductResponse>> GetProductById(Guid id)
         {
@@ -48,7 +48,7 @@ namespace Orderflow.Catalog.Controllers
             return Ok("Producto creado con exito");
         }
 
-        [HttpPatch("UpdateStock")]
+        [HttpPatch("{id:Guid}/UpdateStock")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UpdateStockResponse>> UpdateStock([FromBody] UpdateStockRequest request)
         {
@@ -62,7 +62,7 @@ namespace Orderflow.Catalog.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("UpdatePrice")]
+        [HttpPatch("{id:Guid}/UpdatePrice")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UpdatePriceResponse>> UpdatePrice([FromBody] UpdatePriceRequest request)
         {
@@ -88,6 +88,31 @@ namespace Orderflow.Catalog.Controllers
             }
 
            return  Ok("Producto eliminado con exito");
+        }
+
+        [HttpPost("{id:Guid}/reserve")]
+        public async Task<IActionResult> ReserveStock(Guid id, StockOperationRequest request)
+        {
+            var result = await _stockService.ReserveStockAsync(id, request.Stock);
+
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest(result.ErrorMessage);
+        }
+
+        [HttpPost("{id:Guid}/release")]
+        public async Task<IActionResult> ReleaseStock(Guid id, StockOperationRequest request)
+        {
+            var result = await _stockService.ReleaseStockAsync(id, request.Stock);
+
+            if (result.Success)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.ErrorMessage);
         }
     }
 }

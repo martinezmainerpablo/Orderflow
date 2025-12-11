@@ -54,4 +54,5 @@
         public required decimal Price { get; set; }
     };
 
+    public record StockOperationRequest(int Stock);
 }
