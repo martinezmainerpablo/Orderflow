@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Orderflow..Identity/**'
+      - 'Orderflow.Identity/**'
       - 'Orderflow.ServiceDefaults/**'
       - 'Orderflow.Shared/**'
       - '.github/workflows/buildandpush.yml'
