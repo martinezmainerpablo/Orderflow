@@ -7,15 +7,15 @@ namespace Orderflow.Orders.Services
     public interface IOrderService
     {
         //user methods
-        Task<IEnumerable<OrderListResponse>> GetUserOrdersAsync(Guid userId);
-        Task<OrderResponse> GetOrderByIdAsync(Guid orderId, Guid userId);
-        Task<OrderResponse> CreateOrderAsync(Guid userId, CreateOrderRequest request);
+        Task<ServiceResult<IEnumerable<OrderListResponse>>> GetUserOrdersAsync(Guid userId);
+        Task<ServiceResult<OrderResponse>> GetOrderByIdAsync(Guid orderId, Guid userId);
+        Task<ServiceResult<OrderResponse>> CreateOrderAsync(Guid userId, CreateOrderRequest request);
         Task<IActionResult> CancelOrder(Guid orderId, Guid userId);
 
 
         //admin methods
-        Task<IEnumerable<OrderListResponse>> GetAllOrdersAsync(OrderStatus? status, Guid? userId);
-        Task<OrderResponse> GetByIdForAdminAsync(Guid id);
+        Task<ServiceResult<IEnumerable<OrderListResponse>>> GetAllOrdersAsync(OrderStatus? status, Guid? userId);
+        Task<ServiceResult<OrderResponse>> GetByIdForAdminAsync(Guid id);
         Task<OrderResponse> UpdateStatusAsync(Guid id, OrderStatus newStatus);
     }
 }

@@ -17,32 +17,19 @@ namespace Orderflow.Orders.Services
         private record ProductInfo(int Id, string Name, decimal Price, int Stock, bool IsActive);
 
 
-        public async Task<IEnumerable<OrderListResponse>> GetUserOrdersAsync(Guid userId)
+        public async Task<ServiceResult<IEnumerable<OrderListResponse>>> GetUserOrdersAsync(Guid userId)
         {
-            var ordersData = await db.Orders
-               .Where(o => o.UserId == userId)
-               .OrderByDescending(o => o.CreatedAt)
-               .Select(o => new
-               {
-                   o.IdOrder,
-                   o.Status,
-                   o.TotalAmount,
-                   ItemCount = o.Items.Count(),
-                   o.CreatedAt
-               })
-               .ToListAsync();
+            var orders = await db.Orders
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.CreatedAt)
+                .Select(o => new OrderListResponse(
+                    o.IdOrder, o.Status.ToString(), o.TotalAmount, o.Items.Count, o.CreatedAt))
+                .ToListAsync();
 
-            var response = ordersData.Select(o => new OrderListResponse(
-                o.IdOrder,
-                o.Status.ToString(),
-                o.TotalAmount,
-                o.ItemCount,
-                o.CreatedAt));
-
-            return response;
+            return ServiceResult<IEnumerable<OrderListResponse>>.Success(orders);
         }
 
-        public async Task<OrderResponse> GetOrderByIdAsync(Guid orderId, Guid userId)
+        public async Task<ServiceResult<OrderResponse>> GetOrderByIdAsync(Guid orderId, Guid userId)
         {
             var order = await db.Orders
                 .Include(o => o.Items)
@@ -50,22 +37,22 @@ namespace Orderflow.Orders.Services
 
             if (order is null)
             {
-                return null;
+                return ServiceResult<OrderResponse>.Failure("Order not found");
             }
 
             if (order.UserId != userId)
             {
-                return null;
+                return ServiceResult<OrderResponse>.Failure("Access denied");
             }
 
-            return MapToResponse(order);
+            return ServiceResult<OrderResponse>.Success(MapToResponse(order));
         }
 
-        public async Task<OrderResponse> CreateOrderAsync(Guid userId, CreateOrderRequest request)
+        public async Task<ServiceResult<OrderResponse>> CreateOrderAsync(Guid userId, CreateOrderRequest request)
         {
             if (request?.Items == null || !request.Items.Any())
             {
-                return OrderResponse.Failure("Order must have at least one item.");
+                return ServiceResult<OrderResponse>.Failure("Order must have at least one item");
             }
 
             var catalogClient = httpClientFactory.CreateClient("catalog");
@@ -74,8 +61,6 @@ namespace Orderflow.Orders.Services
 
             foreach (var item in request.Items)
             {
-                ProductInfo product;
-
                 try
                 {
                     var response = await catalogClient.GetAsync($"/api/v1/products/getproduct/{item.ProductId}");
@@ -83,80 +68,78 @@ namespace Orderflow.Orders.Services
                     if (!response.IsSuccessStatusCode)
                     {
                         await ReleaseReservedStockAsync(catalogClient, reservedItems);
-                        return OrderResponse.Failure($"Product {item.ProductId} not found");
+                        return ServiceResult<OrderResponse>.Failure($"Product {item.ProductId} not found");
                     }
 
 
-                    product = await response.Content.ReadFromJsonAsync<ProductInfo>()
-                        ?? throw new InvalidOperationException($"Could not deserialize product {item.ProductId}.");
+                    var product = await response.Content.ReadFromJsonAsync<ProductInfo>();
+                    if (product is null)
+                    {
+                        await ReleaseReservedStockAsync(catalogClient, reservedItems);
+                        return ServiceResult<OrderResponse>.Failure($"Could not fetch product {item.ProductId}");
+                    }
 
                     if (!product.IsActive)
                     {
                         await ReleaseReservedStockAsync(catalogClient, reservedItems);
-                        return OrderResponse.Failure($"Product {product.Name} is not available");
+                        return ServiceResult<OrderResponse>.Failure($"Product {product.Name} is not available");
                     }
 
                     var reserveResponse = await catalogClient.PostAsJsonAsync(
                         $"/api/v1/products/{item.ProductId}/reserve",
-                        new { Units = item.Units }); 
+                        new { Unit = item.Unit });
 
                     if (!reserveResponse.IsSuccessStatusCode)
                     {
                         await ReleaseReservedStockAsync(catalogClient, reservedItems);
                         var error = await reserveResponse.Content.ReadAsStringAsync();
-                        return OrderResponse.Failure(
+                        return ServiceResult<OrderResponse>.Failure(
                             reserveResponse.StatusCode == System.Net.HttpStatusCode.Conflict
                                 ? $"Insufficient stock for {product.Name}"
                                 : $"Failed to reserve stock for {product.Name}: {error}");
                     }
 
-                    reservedItems.Add((item.ProductId, item.Units));
+                    reservedItems.Add((item.ProductId, item.Unit));
 
                     orderItems.Add(new OrderItem
                     {
                         ProductId = item.ProductId,
                         ProductName = product.Name,
                         UnitPrice = product.Price,
-                        Units = item.Units
+                        Unit = item.Unit
                     });
                 }
                 catch (HttpRequestException ex)
                 {
                     logger.LogError(ex, "Catalog service unavailable");
                     await ReleaseReservedStockAsync(catalogClient, reservedItems);
-                    return OrderResponse.Failure("Catalog service unavailable");
+                    return ServiceResult<OrderResponse>.Failure("Catalog service unavailable");
                 }
-                catch (Exception ex)
+
+                var order = new Order
                 {
-                    logger.LogError(ex, "An unexpected error occurred during order creation.");
-                    await ReleaseReservedStockAsync(catalogClient, reservedItems);
-                    return OrderResponse.Failure("An unexpected error occurred.");
-                }
+                    UserId = userId,
+                    ShippingAddress = request.ShippingAddress,
+                    Notes = request.Notes,
+                    Items = orderItems,
+                    TotalAmount = orderItems.Sum(i => i.UnitPrice * i.Unit)
+                };
+
+                db.Orders.Add(order);
+                await db.SaveChangesAsync();
+
+                logger.LogInformation("Order created: {OrderId} for user {UserId}", order.IdOrder, userId);
+
+                var orderCreatedEvent = new OrderCreatedEvent(
+                    order.IdOrder,
+                    userId,
+                    orderItems.Select(i => new OrderItemEvent(i.ProductId, i.ProductName, i.Unit)));
+
+                await publishEndpoint.Publish(orderCreatedEvent);
+
+                return ServiceResult<OrderResponse>.Success(MapToResponse(order), "Order created successfully");
+
             }
-
-            var order = new Order
-            {
-                UserId = userId,
-                ShippingAddress = request.ShippingAddress,
-                Notes = request.Notes,
-                Items = orderItems,
-                TotalAmount = orderItems.Sum(i => i.UnitPrice * i.Units)
-            };
-
-            db.Orders.Add(order);
-            await db.SaveChangesAsync();
-
-            logger.LogInformation("Order created: {OrderId} for user {UserId}", order.IdOrder, userId);
-
-            var orderCreatedEvent = new OrderCreatedEvent(
-                order.IdOrder,
-                userId,
-                orderItems.Select(i => new OrderItemEvent(i.ProductId, i.ProductName, i.Units)));
-
-            await publishEndpoint.Publish(orderCreatedEvent);
-
-
-            return OrderResponse.Success(MapToResponse(order));
         }
 
         public async Task<IActionResult> CancelOrder(Guid orderId, Guid userId)
@@ -187,11 +170,10 @@ namespace Orderflow.Orders.Services
 
              await publishEndpoint.Publish(orderCancelledEvent);
 
-            // Devolver IActionResult con el DTO mapeado
             return new OkObjectResult(MapToResponse(order));
         }
 
-        public async Task<IEnumerable<OrderListResponse>> GetAllOrdersAsync(OrderStatus? status, Guid? userId)
+        public async Task<ServiceResult<IEnumerable<OrderListResponse>>> GetAllOrdersAsync(OrderStatus? status, Guid? userId)
         {
             var query = db.Orders.AsQueryable();
 
@@ -200,7 +182,7 @@ namespace Orderflow.Orders.Services
             // Asumiendo que userId es un filtro obligatorio para el administrador
             query = query.Where(o => o.UserId == userId);
 
-            var ordersData = await query
+            var orders = await query
                  .OrderByDescending(o => o.CreatedAt)
                  .Select(o => new
                  {
@@ -212,8 +194,7 @@ namespace Orderflow.Orders.Services
                  })
                  .ToListAsync();
 
-            return ordersData.Select(o => new OrderListResponse(
-                o.IdOrder, o.Status.ToString(), o.TotalAmount, o.ItemCount, o.CreatedAt));
+            return ServiceResult<IEnumerable<OrderListResponse>>.Success(orders);
         }
 
         public async Task<OrderResponse> GetByIdForAdminAsync(Guid id)

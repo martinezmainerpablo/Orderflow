@@ -107,8 +107,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-var jwtKey = builder.Configuration["Jwt:SecretKey"];
-var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
