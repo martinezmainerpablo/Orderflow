@@ -33,7 +33,7 @@ namespace Orderflow.Orders.Migrations
                 name: "OrderItems",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),

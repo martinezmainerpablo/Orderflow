@@ -20,6 +20,11 @@ var rabbit = builder
     .WithDataVolume("rabbitMQ")
     .WithManagementPlugin();
 
+// MailDev - Local SMTP server for development (Web UI on 1080, SMTP on 1025)
+var mailService = builder.AddContainer("maildev", "maildev/maildev:latest")
+    .WithHttpEndpoint(port: 1080, targetPort: 1080, name: "web")
+    .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 //se añade una base de datos específica
 var identitydb = postgres.AddDatabase("identitydb");
@@ -33,6 +38,11 @@ var identityService= builder.AddProject<Projects.Orderflow_Identity>("orderflow-
     .WithReference(identitydb)
     .WithReference(rabbit);    //referencia a la base de datos
 
+builder.AddProject<Projects.Orderflow_Notification>("orderflow-notification")
+    .WaitFor(rabbit)
+    .WithEnvironment("Email__SmtpHost", mailService.GetEndpoint("smtp").Property(EndpointProperty.Host))
+    .WithEnvironment("Email__SmtpPort", mailService.GetEndpoint("smtp").Property(EndpointProperty.Port))
+    .WithReference(rabbit);
 
 var catalogService = builder.AddProject<Projects.Orderflow_Catalog>("orderflow-catalog")
     .WaitFor(catalogydb)
@@ -45,17 +55,8 @@ var ordersService = builder.AddProject<Projects.Orderflow_Orders>("orderflow-ord
     .WaitFor(ordersDb)
     .WaitFor(rabbit);
 
-
-// MailDev - Local SMTP server for development (Web UI on 1080, SMTP on 1025)
-var mailService = builder.AddContainer("maildev", "maildev/maildev:latest")
-    .WithHttpEndpoint(port: 1080, targetPort: 1080, name: "web")
-    .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp")
-    .WithLifetime(ContainerLifetime.Persistent);
-
-
-
-                           
-builder.AddProject<Projects.Orderflow_ApiGateway>("orderflow-apigateway")
+                      
+var apiGateway = builder.AddProject<Projects.Orderflow_ApiGateway>("orderflow-apigateway")
             .WithReference(redis)  //añadimos redis al api gateway
             .WithReference(rabbit) //añadimos rabbitmq al api gateway
             .WithReference(identityService)
@@ -68,17 +69,12 @@ builder.AddProject<Projects.Orderflow_ApiGateway>("orderflow-apigateway")
             .WaitFor(ordersService);
 
 
-builder.AddProject<Projects.Orderflow_Notification>("orderflow-notification")
-    .WaitFor(rabbit)
-    .WithEnvironment("Email__SmtpHost", mailService.GetEndpoint("smtp").Property(EndpointProperty.Host))
-    .WithEnvironment("Email__SmtpPort", mailService.GetEndpoint("smtp").Property(EndpointProperty.Port))
-    .WithReference(rabbit);
-
-
 var webApp = builder.AddNpmApp("orderflowweb", "../orderflow.web", "dev")
-                .WithReference(identityService)
-                .WithHttpEndpoint(port: 7000, env: "PORT")
-                .WithExternalHttpEndpoints()
-                .PublishAsDockerFile();
+     .WithReference(apiGateway)
+     .WithReference(identityService)
+     .WithHttpEndpoint(port: 7000, env: "PORT")
+     .WaitFor(apiGateway)
+     .WithExternalHttpEndpoints()
+     .PublishAsDockerFile();
 
 builder.Build().Run();

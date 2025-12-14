@@ -3,7 +3,6 @@ using Asp.Versioning.ApiExplorer;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Orderflow.Orders.Data;
@@ -18,8 +17,6 @@ builder.AddServiceDefaults();
 //para poder usar los secretos de usuario
 builder.Configuration.AddUserSecrets(typeof(Program).Assembly, true);
 
-// Add PostgreSQL DbContext
-builder.AddNpgsqlDbContext<OrdersDbContext>("ordersdb");
 
 builder.Services.AddMassTransit(config =>
 {
@@ -38,6 +35,14 @@ builder.Services.AddMassTransit(config =>
     });
 });
 
+// Add PostgreSQL DbContext
+builder.AddNpgsqlDbContext<OrdersDbContext>("ordersdb");
+
+// Add HttpClient for Catalog service
+builder.Services.AddHttpClient("catalog", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7223");
+});
 
 // Add services to the container.
 builder.Services.AddScoped<IOrderService, OrderService>();

@@ -29,13 +29,13 @@ namespace Orderflow.Catalog.Services
                 }
 
                 logger.LogWarning(
-                    "Insufficient stock for product {ProductId}: requested {Quantity}",
+                    "Insufficient stock for product {ProductId}: requested {Unit}",
                     productId, units);
                 return ServiceResult.Failure($"Insufficient stock for product {productId}");
             }
 
             logger.LogInformation(
-                "Stock reserved for product {ProductId}: -{Quantity}",
+                "Stock reserved for product {ProductId}: -{Units}",
                 productId, units);
 
             return ServiceResult.SuccessResult();
@@ -57,7 +57,7 @@ namespace Orderflow.Catalog.Services
             }
 
             logger.LogInformation(
-                "Stock released for product {ProductId}: +{Quantity}",
+                "Stock released for product {ProductId}: +{Units}",
                 productId, units);
 
             return ServiceResult.SuccessResult();

@@ -11,16 +11,16 @@ namespace Orderflow.Orders.Controllers
     [Authorize(Roles ="Admin")]
     public class AdminOrdersController(IOrderService orderService) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<OrderListResponse>>> GetAll(
             [FromQuery] OrderStatus? status = null,
             [FromQuery] Guid? userId = null)
         {
             var result = await orderService.GetAllOrdersAsync(status, userId);
-            return Ok(result);
+            return Ok(result.Data);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:Guid}")]
         public async Task<ActionResult<OrderResponse>> GetById(Guid id)
         {
             var result = await orderService.GetByIdForAdminAsync(id);
@@ -28,7 +28,7 @@ namespace Orderflow.Orders.Controllers
             if (result == null)
                 return NotFound();
 
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpPut("{id:guid}/status")]
@@ -36,22 +36,15 @@ namespace Orderflow.Orders.Controllers
         {
             var result = await orderService.UpdateStatusAsync(id, request.Status);
 
-            if (result == null)
+            if (!result.Success)
             {
-                return StatusCode(500, "Error interno: El servicio de órdenes devolvió un resultado nulo.");
+                if (result.Errors.Any(e => e.Contains("not found")))
+                    return NotFound();
+
+                return BadRequest(string.Join(", ", result.Errors));
             }
 
-            if (!result.IsSuccess)
-            {
-                if (result.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
-                {
-                    return NotFound(); 
-                }
-
-                return BadRequest(result.Message);
-            }
-
-            return Ok("Estado actualizado");
+            return NoContent();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Orderflow.Orders.Class;
 using Orderflow.Orders.DTOs;
 using Orderflow.Orders.Services;
 using System.Security.Claims;
@@ -7,96 +9,100 @@ namespace Orderflow.Orders.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize(Roles = "User")]
 
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
-        private ActionResult<Guid> GetUserIdFromClaims()
+        private Guid GetUserId()
         {
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
-
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-
-            if (!Guid.TryParse(userIdString, out Guid userIdGuid))
-            {
-                return BadRequest("El identificador de usuario en los claims no tiene el formato correcto."); 
-            }
-
-            return userIdGuid;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Guid.TryParse(userIdClaim, out var userId) ? userId : Guid.Empty;
         }
 
         [HttpGet("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<OrderListResponse>>> GetUserOrders()
         {
-            var userIdResult = GetUserIdFromClaims();
-            if (userIdResult.Result is ActionResult result)
+            var userId = GetUserId();
+            if (userId == Guid.Empty)
             {
-                return result;
+                return Unauthorized("Invalid user token");
             }
-            var userId = userIdResult.Value;
 
-            var orders = await orderService.GetUserOrdersAsync(userId);
+            var result = await orderService.GetUserOrdersAsync(userId);
 
-            return Ok(orders); 
+            if (!result.Success)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.Data);
         }
 
-        [HttpGet("GetOrder/{id:guid}")]
-        public async Task<ActionResult<OrderResponse>> GetOrderById(Guid id)
+        [HttpGet("GetOrder/{orderId:guid}")]
+        public async Task<ActionResult<OrderResponse>> GetOrderById(Guid orderId)
         {
-            var userIdResult = GetUserIdFromClaims();
-            if (userIdResult.Result is ActionResult result)
+            var userId = GetUserId();
+            if (userId == Guid.Empty)
             {
-                return result;
-            }
-            var userId = userIdResult.Value;
-
-            var order = await orderService.GetOrderByIdAsync(id, userId);
-
-            if (order is null)
-            {
-                return NotFound($"Order with ID {id} not found or access denied."); 
+                return Unauthorized("Invalid user token");
             }
 
-            return Ok(order); 
+            var result = await orderService.GetOrderByIdAsync(orderId, userId);
+
+            if (!result.Success)
+            {
+                return result.ErrorMessage == "Order not found"
+                    ? NotFound(result.ErrorMessage)
+                    : Forbid();
+            }
+
+            return Ok(result.Data);
         }
 
         [HttpPost("Create")]
         public async Task<ActionResult<OrderResponse>> CreateOrder(CreateOrderRequest request)
         {
-            var userIdResult = GetUserIdFromClaims();
-            if (userIdResult.Result is ActionResult result)
+            var userId = GetUserId();
+            if (userId == Guid.Empty)
             {
-                return result;
-            }
-            var userId = userIdResult.Value;
-
-            var orderResult = await orderService.CreateOrderAsync(userId, request);
-
-            if (!orderResult.IsSuccess)
-            {
-                return BadRequest(orderResult.Message); 
+                return Unauthorized("Invalid user token");
             }
 
-            return CreatedAtAction(nameof(GetOrderById), new { id = orderResult.Id }, orderResult);
+            var authHeader = Request.Headers.Authorization.FirstOrDefault();
+            var token = authHeader?.Replace("Bearer ", "");
+
+            var result = await orderService.CreateOrderAsync(userId, request, token);
+
+            if (!result.Success)
+            {
+                if (result.Errors.Any(e => e.Contains("service unavailable")))
+                    return StatusCode(503, string.Join(", ", result.Errors));
+                    
+                return BadRequest(string.Join(", ", result.Errors));
+            }
+
+            var locationUri = Url.Action(nameof(GetOrderById), new { orderId = result.Data.IdOrder });
+            return Created(locationUri, result.Data);
         }
 
-        [HttpPut("{id:guid}/cancel")]
-        public async Task<IActionResult> CancelOrder(Guid id)
+        [HttpPost("{orderId:guid}/cancel")]
+        public async Task<IActionResult> CancelOrder(Guid orderId)
         {
-            var userIdResult = GetUserIdFromClaims();
-            if (userIdResult.Result is ActionResult result)
+            var userId = GetUserId();
+            if (userId == Guid.Empty)
             {
-                return result;
+                return Unauthorized("Invalid user token");
             }
-            var userId = userIdResult.Value;
 
-            var actionResult = await orderService.CancelOrder(id, userId);
+            var result = await orderService.CancelOrder(orderId, userId);
 
-            if (actionResult is ForbidResult || actionResult is NotFoundObjectResult || actionResult is BadRequestObjectResult)
+            return Ok(new
             {
-                return actionResult;
-            }
-            return NoContent(); 
+                idOrder = orderId,
+                status = "Cancelled",
+                success = true,
+                message = "Order cancelled successfully"
+            }); 
         }
     }
 }
