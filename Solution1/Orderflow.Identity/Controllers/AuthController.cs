@@ -85,6 +85,7 @@ namespace Orderflow.Identity.Controllers
                 TokenType: "Bearer",
                 UserId: user.Id,
                 Email: user.Email!,
+                UserName: user.UserName!,
                 Roles: roles
 );
             return Ok(response);

@@ -21,6 +21,7 @@ namespace Orderflow.Identity.DTOs
         
             string AccessToken ,
             string TokenType ,
+            string UserName,
             string UserId ,
             string Email ,
             IEnumerable<string> Roles
