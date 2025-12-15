@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GestionUsuarios.css'; // Importamos los estilos
 
@@ -59,6 +59,17 @@ export const GestionUsuarios = () => {
     fetchUsers();
   }, [navigate]);
 
+
+    const handleCreateUser = () => {
+        // Navegaremos a una nueva ruta para el formulario de creación
+        navigate('/gestion-usuarios/crear');
+    };
+
+    const handleViewDetails = (userId: string) => {
+        // Navegamos a /gestion-usuarios/ID_DEL_USUARIO
+        navigate(`/gestion-usuarios/${userId}`); 
+    };
+
   if (loading) {
     return <div className="user-management-container loading">Cargando lista de usuarios...</div>;
   }
@@ -76,7 +87,16 @@ export const GestionUsuarios = () => {
   return (
     <div className="user-management-container">
       <h2 className="title">Gestión de Usuarios</h2>
-      <button onClick={() => navigate('/')} className="back-btn">Volver al Inicio</button>
+        <div className="header-actions">
+            <button onClick={() => navigate('/')} className="back-btn">Volver al Inicio</button>
+            
+            <button 
+                onClick={handleCreateUser} 
+                className="create-user-btn" // 🆕 Nuevo botón
+            >
+                Crear Usuario
+            </button>
+        </div>
 
       <div className="user-table-wrapper">
         <table className="user-table">
@@ -97,7 +117,7 @@ export const GestionUsuarios = () => {
                 <td className="actions-cell"> 
                     <button 
                         className="action-btn view-btn"
-                        //onClick={() => handleViewDetails(user.id)}
+                        onClick={() => handleViewDetails(user.id)}
                         title="Ver detalles del usuario"
                     >
                         Ver Detalles

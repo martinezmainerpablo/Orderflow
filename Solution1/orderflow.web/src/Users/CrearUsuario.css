@@ -1,0 +1,117 @@
+.create-user-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-color: #caf0f8; /* Light Cyan */
+    color: #03045e;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-title {
+    font-size: 2.5em;
+    color: #03045e; /* Deep Twilight */
+    margin-bottom: 20px;
+}
+
+/* --- Botón Volver --- */
+.back-btn {
+    background-color: #0077b6; /* Bright Teal Blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+    background-color: #005f93;
+}
+
+/* --- Formulario de Creación --- */
+.creation-form {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(3, 4, 94, 0.15);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #03045e;
+    margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #0077b6; /* Bright Teal Blue al enfocar */
+    outline: none;
+}
+
+/* --- Botón de Envío --- */
+.submit-btn {
+    width: 100%;
+    background-color: #03045e; /* Deep Twilight */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #0077b6; /* Bright Teal Blue al pasar el ratón */
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* --- Mensajes de Estado --- */
+.status-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-message p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}

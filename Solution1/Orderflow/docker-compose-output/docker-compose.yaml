@@ -1,0 +1,240 @@
+services:
+  orderflow-dashboard:
+    image: "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest"
+    expose:
+      - "18888"
+      - "18889"
+    networks:
+      - "aspire"
+    restart: "always"
+  postgres:
+    image: "docker.io/library/postgres:17.6"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    expose:
+      - "5432"
+    volumes:
+      - type: "volume"
+        target: "/var/lib/postgresql/data"
+        source: "orderflow-8bbf972b91-postgres-data"
+        read_only: false
+    networks:
+      - "aspire"
+  redis:
+    image: "docker.io/library/redis:8.2"
+    command:
+      - "-c"
+      - "redis-server --requirepass $$REDIS_PASSWORD --save 60 1"
+    entrypoint:
+      - "/bin/sh"
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    expose:
+      - "6379"
+    volumes:
+      - type: "volume"
+        target: "/data"
+        source: "redis-data-identity"
+        read_only: false
+    networks:
+      - "aspire"
+  rabbitmq:
+    image: "docker.io/library/rabbitmq:4.2-management"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD}"
+    expose:
+      - "5672"
+      - "15672"
+    volumes:
+      - type: "volume"
+        target: "/var/lib/rabbitmq"
+        source: "rabbitMQ"
+        read_only: false
+    networks:
+      - "aspire"
+  maildev:
+    image: "maildev/maildev:latest"
+    expose:
+      - "1080"
+      - "1025"
+    networks:
+      - "aspire"
+  orderflow-identity:
+    image: "${ORDERFLOW_IDENTITY_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${ORDERFLOW_IDENTITY_PORT}"
+      ConnectionStrings__identitydb: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=identitydb"
+      ConnectionStrings__rabbitMQ: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      RABBITMQ_HOST: "rabbitMQ"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+      RABBITMQ_URI: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflow-identity"
+    expose:
+      - "${ORDERFLOW_IDENTITY_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+      rabbitmq:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orderflow-notification:
+    image: "${ORDERFLOW_NOTIFICATION_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      Email__SmtpHost: "maildev"
+      Email__SmtpPort: "1025"
+      ConnectionStrings__rabbitMQ: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      RABBITMQ_HOST: "rabbitMQ"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+      RABBITMQ_URI: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflow-notification"
+    depends_on:
+      rabbitmq:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orderflow-catalog:
+    image: "${ORDERFLOW_CATALOG_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${ORDERFLOW_CATALOG_PORT}"
+      ConnectionStrings__categorydb: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=categorydb"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflow-catalog"
+    expose:
+      - "${ORDERFLOW_CATALOG_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orderflow-orders:
+    image: "${ORDERFLOW_ORDERS_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${ORDERFLOW_ORDERS_PORT}"
+      ConnectionStrings__ordersdb: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=ordersdb"
+      ConnectionStrings__rabbitMQ: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      RABBITMQ_HOST: "rabbitMQ"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+      RABBITMQ_URI: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      ORDERFLOW-CATALOG_HTTP: "http://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      services__orderflow-catalog__http__0: "http://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      ORDERFLOW-CATALOG_HTTPS: "https://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflow-orders"
+    expose:
+      - "${ORDERFLOW_ORDERS_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+      rabbitmq:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orderflow-apigateway:
+    image: "${ORDERFLOW_APIGATEWAY_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${ORDERFLOW_APIGATEWAY_PORT}"
+      ConnectionStrings__redis: "redis:6379,password=${REDIS_PASSWORD}"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      REDIS_URI: "redis://:${REDIS_PASSWORD}@redis:6379"
+      ConnectionStrings__rabbitMQ: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      RABBITMQ_HOST: "rabbitMQ"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+      RABBITMQ_URI: "amqp://guest:${RABBITMQ_PASSWORD}@rabbitMQ:5672"
+      ORDERFLOW-IDENTITY_HTTP: "http://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      services__orderflow-identity__http__0: "http://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      ORDERFLOW-IDENTITY_HTTPS: "https://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      ORDERFLOW-CATALOG_HTTP: "http://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      services__orderflow-catalog__http__0: "http://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      ORDERFLOW-CATALOG_HTTPS: "https://orderflow-catalog:${ORDERFLOW_CATALOG_PORT}"
+      ORDERFLOW-ORDERS_HTTP: "http://orderflow-orders:${ORDERFLOW_ORDERS_PORT}"
+      services__orderflow-orders__http__0: "http://orderflow-orders:${ORDERFLOW_ORDERS_PORT}"
+      ORDERFLOW-ORDERS_HTTPS: "https://orderflow-orders:${ORDERFLOW_ORDERS_PORT}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflow-apigateway"
+    expose:
+      - "${ORDERFLOW_APIGATEWAY_PORT}"
+    depends_on:
+      redis:
+        condition: "service_started"
+      rabbitmq:
+        condition: "service_started"
+      orderflow-identity:
+        condition: "service_started"
+      orderflow-catalog:
+        condition: "service_started"
+      orderflow-orders:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orderflowweb:
+    image: "${ORDERFLOWWEB_IMAGE}"
+    environment:
+      NODE_ENV: "production"
+      ORDERFLOW-APIGATEWAY_HTTP: "http://orderflow-apigateway:${ORDERFLOW_APIGATEWAY_PORT}"
+      services__orderflow-apigateway__http__0: "http://orderflow-apigateway:${ORDERFLOW_APIGATEWAY_PORT}"
+      ORDERFLOW-APIGATEWAY_HTTPS: "https://orderflow-apigateway:${ORDERFLOW_APIGATEWAY_PORT}"
+      ORDERFLOW-IDENTITY_HTTP: "http://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      services__orderflow-identity__http__0: "http://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      ORDERFLOW-IDENTITY_HTTPS: "https://orderflow-identity:${ORDERFLOW_IDENTITY_PORT}"
+      PORT: "8000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://orderflow-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orderflowweb"
+    ports:
+      - "7000:8000"
+    depends_on:
+      orderflow-apigateway:
+        condition: "service_started"
+    networks:
+      - "aspire"
+networks:
+  aspire:
+    driver: "bridge"
+volumes:
+  orderflow-8bbf972b91-postgres-data:
+    driver: "local"
+  redis-data-identity:
+    driver: "local"
+  rabbitMQ:
+    driver: "local"

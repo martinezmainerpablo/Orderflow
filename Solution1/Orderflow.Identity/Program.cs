@@ -172,8 +172,9 @@ if (app.Environment.IsDevelopment())
             await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
+    var configuration = app.Services.GetRequiredService<IConfiguration>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-    await SeedData.CreateAdmin(userManager, roleManager);
+    await SeedData.CreateAdmin(userManager, roleManager, configuration);
 
     app.UseSwagger();
     app.UseSwaggerUI();

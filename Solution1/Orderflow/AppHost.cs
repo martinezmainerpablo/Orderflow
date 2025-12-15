@@ -1,6 +1,8 @@
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.AddDockerComposeEnvironment("orderflow");
+
 //registra un servidor de Postgres
 var postgres = builder.AddPostgres("postgres")
     .WithDataVolume(isReadOnly: false)

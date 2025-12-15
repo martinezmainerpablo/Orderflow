@@ -1,0 +1,27 @@
+{
+  "projectPath": ".",
+  "outputPath": "./k8s-output",
+  "containerImageTags": [
+    "latest"
+  ],
+  "containerBuilder": "docker",
+  "outputFormat": "kustomize",
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "includeDashboard": true,
+  "secrets": {
+    "salt": "YNnJgQmk2ItLDsM3",
+    "hash": "poztKN2J7FIqnzu6Buge6yUsxeYFizhS4Rf7QkAd8Ds=",
+    "secrets": {
+      "postgres-password": {
+        "value": "YNnJgQmk2ItLDsM3c\u002B/rxKY\u002BKjlz3jf\u002Bc7SwwyVqKZffsp6uXrtmfBDcM6zblMTwueE="
+      },
+      "redis-password": {
+        "value": "YNnJgQmk2ItLDsM3YOf9OuVR95hep0z9P9h0GWxoXov8jZiRFbtoOhjaL4LAouOH65E="
+      },
+      "rabbitMQ-password": {
+        "value": "YNnJgQmk2ItLDsM32qt0nDx1HktQYSDjObHQcillcZPDqevDeudAf2azDPXvqb/biYQ="
+      }
+    }
+  },
+  "processAllComponents": true
+}

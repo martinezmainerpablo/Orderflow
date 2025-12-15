@@ -15,29 +15,85 @@
     margin-bottom: 30px;
 }
 
-/* --- Botón Volver al Inicio --- */
+/* ------------------------------------------- */
+/* --- 🆕 CABECERA DE ACCIONES (Volver y Crear) --- */
+/* ------------------------------------------- */
+
+.header-actions {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between; /* <-- Esto empuja los botones a los extremos */
+    align-items: center; /* <-- Esto asegura que estén centrados verticalmente */
+    margin-bottom: 30px; 
+}
+
+/* --- Botón Volver al Inicio (back-btn) --- */
 .back-btn {
-    background-color: #0077b6; /* Bright Teal Blue */
+    background-color: #0077b6;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    margin-bottom: 30px;
-    transition: background-color 0.3s ease;
+    /* 💥 SOLUCIÓN: ELIMINAR O COMENTAR EL MARGIN-BOTTOM */
+    /* margin-bottom: 30px; */ 
+    transition: background-color 0.3s ease, transform 0.1s ease;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .back-btn:hover {
     background-color: #005f93;
+    transform: translateY(-1px);
 }
 
-/* --- Estilos de la Tabla --- */
+/* --- Botón Crear Usuario (create-user-btn) --- */
+.create-user-btn {
+    background-color: #03045e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.create-user-btn:hover {
+    background-color: #0077b6;
+    transform: translateY(-1px);
+}
+
+/* 🆕 ESTILO ESPECÍFICO PARA CREAR USUARIO */
+.create-user-btn {
+    background-color: #03045e; /* Deep Twilight (para un botón prominente de acción principal) */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.create-user-btn:hover {
+    background-color: #0077b6; /* Cambia a Bright Teal Blue al pasar el ratón */
+    transform: translateY(-1px);
+}
+
+
+/* ------------------------------------------- */
+/* --- Estilos de la Tabla (Resto sin cambios) --- */
+/* ------------------------------------------- */
 .user-table-wrapper {
     width: 100%;
     max-width: 1000px;
-    overflow-x: auto; /* Permite scroll horizontal en móviles */
+    overflow-x: auto; 
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(3, 4, 94, 0.15);
@@ -61,7 +117,7 @@
 }
 
 .user-table tbody tr:hover {
-    background-color: #f0f8ff; /* Fondo muy claro al pasar el ratón */
+    background-color: #f0f8ff; 
 }
 
 /* Estilos para el rol (badge) */
@@ -76,11 +132,11 @@
 
 /* Colores específicos por rol */
 .role-admin, .role-administrator {
-    background-color: #03045e; /* Deep Twilight (Para destacar el Admin) */
+    background-color: #03045e; 
 }
 
 .role-user {
-    background-color: #00b4d8; /* Turquoise Surf */
+    background-color: #00b4d8; 
 }
 
 /* --- Mensajes de estado --- */
@@ -98,6 +154,8 @@
     border: 1px solid darkred;
 }
 
+/* --- Botones de Acción de Fila --- */
+
 .action-btn {
     border: none;
     padding: 8px 12px;
@@ -113,14 +171,14 @@
     transform: translateY(-1px);
 }
 
-/* 🆕 Botón VER DETALLES (Bright Teal Blue) */
+/* Botón VER DETALLES (Bright Teal Blue) */
 .view-btn {
-    background-color: #0077b6; /* Bright Teal Blue */
+    background-color: #0077b6; 
     color: white;
 }
 
-/* 🆕 Botón BORRAR (Rojo de peligro) */
+/* Botón BORRAR (Rojo de peligro) */
 .delete-btn {
-    background-color: #d63031; /* Rojo fuerte para indicar acción destructiva */
+    background-color: #d63031; 
     color: white;
 }

@@ -7,10 +7,10 @@ namespace Orderflow.Catalog.Controllers
 {
     [ApiController]
     [Route("/api/v{version:apiVersion}/[controller]")]
-    [Authorize(Roles = "Admin")]
     public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {
         [HttpGet("GetAllCategory")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll()
         {
             var result = await categoryService.GetAllAsync();
@@ -21,7 +21,8 @@ namespace Orderflow.Catalog.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetCategory")]
+        [HttpGet("GetCategory/{id:Guid}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<CategoryResponse>> GetById(Guid id)
         {
             var category = await categoryService.GetByIdAsync(id);
@@ -35,6 +36,7 @@ namespace Orderflow.Catalog.Controllers
         }
         
         [HttpPost("CreateCategory")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CategoryResponse>> Create(CreateCategoryRequest request)
         {
             var result = await categoryService.CreateAsync(request);
@@ -43,7 +45,8 @@ namespace Orderflow.Catalog.Controllers
         }
 
 
-        [HttpDelete("DeleteCategory")]
+        [HttpDelete("DeleteCategory/{id:Guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await categoryService.DeleteAsync(id);
