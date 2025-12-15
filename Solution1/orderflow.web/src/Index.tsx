@@ -32,8 +32,18 @@ export const Index = () => {
     navigate('/login');
   };
 
+  const handleNavigateToUser = () => {
+    navigate('/gestion-usuarios'); // Asegúrate de que esta ruta esté configurada en tu Router
+  };
   const handleNavigateToProducts = () => {
     navigate('/productos'); // Asegúrate de que esta ruta esté configurada en tu Router
+  };
+
+  // Verificar si el usuario es Admin
+  const isAdmin = () => {
+    return user?.roles?.some(role => 
+      role.toLowerCase() === 'admin' || role.toLowerCase() === 'administrator'
+    ) || false;
   };
 
   if (!user) {
@@ -79,12 +89,23 @@ export const Index = () => {
           <button className="card-btn">Ver Órdenes</button>
         </div>
 
-        <div className="card">
-          <div className="card-icon">👤</div>
-          <h3>Mi Perfil</h3>
-          <p>Gestiona tu información personal y preferencias</p>
-          <button className="card-btn">Ver Perfil</button>
-        </div>
+        {/* Card condicional según el rol */}
+        {isAdmin() ? (
+          <div className="card admin-card">
+            <div className="card-icon">👥</div>
+            <h3>Gestionar Usuarios</h3>
+            <p>Administra usuarios, roles y permisos del sistema</p>
+            <button className="card-btn admin-btn"
+            onClick={handleNavigateToUser}>Gestionar Usuarios</button>
+          </div>
+        ) : (
+          <div className="card">
+            <div className="card-icon">👤</div>
+            <h3>Mi Perfil</h3>
+            <p>Gestiona tu información personal y preferencias</p>
+            <button className="card-btn">Ver Perfil</button>
+          </div>
+        )}
       </div>
 
       {/* Footer */}

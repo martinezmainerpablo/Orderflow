@@ -147,6 +147,25 @@ body {
   background-color: #023e8a;
 }
 
+/* Card especial para Admin */
+.admin-card {
+  border: 2px solid #0077b6;
+  background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+}
+
+.admin-card h3 {
+  color: #023e8a;
+}
+
+.admin-btn {
+  background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%);
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, #023e8a 0%, #03045e 100%);
+  transform: scale(1.05);
+}
+
 /* Footer */
 .footer {
   background-color: #03045e;
