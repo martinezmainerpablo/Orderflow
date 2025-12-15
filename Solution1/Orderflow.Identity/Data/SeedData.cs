@@ -11,7 +11,7 @@ namespace Orderflow.Identity.Data
 
             if (string.IsNullOrEmpty(adminPassword))
             {
-                Console.WriteLine("⚠️ ERROR: 'AdminPassword' no se encontró en la configuración. Asegúrate de que el secreto de usuario está configurado.");
+                Console.WriteLine("ERROR: 'AdminPassword' no se encontró en la configuración. Asegúrate de que el secreto de usuario está configurado.");
                 return;
             }
 
