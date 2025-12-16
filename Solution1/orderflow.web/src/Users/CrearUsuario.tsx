@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CrearUsuario.css'; // Importaremos los estilos
+import './CrearUsuario.css'; 
 
-const API_CREATE_URL = 'https://localhost:7058/api/usersadmin/create';
-const AVAILABLE_ROLES = 'https://localhost:7058/api/roles/all'; // Ajusta estos roles según tu backend
+const API_CREATE_URL = 'https://localhost:7058/api/usersadmin/Creater';
+const API_ROLES_URL = 'https://localhost:7058/api/roles/all';
 
+// Interfaces
 interface UserCreationRequest {
   userName: string;
   email: string;
@@ -16,25 +17,109 @@ interface UserCreationResponse {
   email: string;
   rolName: string;
   message: string;
-  errors?: string[];
+  errors?: (string | { code?: string; description?: string; errorMessage?: string })[];
+}
+
+interface RoleResponse {
+    id: string; 
+    name: string;
 }
 
 export const CrearUsuario = () => {
+  const [availableRoles, setAvailableRoles] = useState<string[]>([]);
+  
   const [formData, setFormData] = useState<UserCreationRequest>({
     userName: '',
     email: '',
     password: '',
-    rolName: AVAILABLE_ROLES[0], // Rol predeterminado
+    rolName: '', 
   });
+  
+  const [passwordValidation, setPasswordValidation] = useState({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasDigit: false,
+    hasSpecialChar: false,
+  });
+  
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', message: string[] } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [rolesLoading, setRolesLoading] = useState(true);
+  const [rolesError, setRolesError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // Cargar Roles disponibles
+  useEffect(() => {
+    const fetchRoles = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+          navigate('/login');
+          return;
+      }
+
+      try {
+          const response = await fetch(API_ROLES_URL, {
+              method: 'GET',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+          });
+
+          if (response.status === 401 || response.status === 403) {
+             setRolesError("Acceso denegado. Asegúrate de ser administrador y de tener una sesión activa.");
+             setRolesLoading(false);
+             return; 
+          }
+
+          if (!response.ok) {
+              throw new Error(`Fallo al cargar roles: ${response.statusText}`);
+          }
+
+          const data: RoleResponse[] = await response.json(); 
+          const roleNames = data.map(r => r.name); 
+          
+          setAvailableRoles(roleNames);
+
+          if (roleNames.length > 0) {
+              const defaultRole = roleNames.includes('User') ? 'User' : roleNames[0];
+              setFormData(prev => ({ ...prev, rolName: defaultRole }));
+          }
+
+      } catch (err: any) {
+          console.error("Error al obtener roles:", err);
+          setRolesError(err.message || 'Error de conexión con el servicio de roles.');
+      } finally {
+          setRolesLoading(false);
+      }
+    };
+
+    fetchRoles();
+  }, [navigate]);
+  
+  // Validar contraseña en tiempo real
+  const validatePassword = (password: string) => {
+    setPasswordValidation({
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasDigit: /\d/.test(password),
+      hasSpecialChar: /[^\da-zA-Z]/.test(password),
+    });
+  };
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Validar contraseña en tiempo real
+    if (name === 'password') {
+      validatePassword(value);
+    }
   };
 
+  // Enviar datos del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -56,39 +141,66 @@ export const CrearUsuario = () => {
         body: JSON.stringify(formData),
       });
 
-      const responseData: UserCreationResponse = await response.json();
+      let responseData: UserCreationResponse | null = null;
+      try {
+          responseData = await response.json();
+      } catch {
+          // No hay cuerpo JSON
+      }
 
       if (response.ok) {
-        setStatusMessage({ type: 'success', message: [responseData.message || 'Usuario creado con éxito.'] });
-        // Opcional: Limpiar el formulario o redirigir
-        setFormData({ userName: '', email: '', password: '', rolName: AVAILABLE_ROLES[0] });
-      } else if (response.status === 400) {
-        // Manejar errores de validación (FluentValidation o Identity)
+        setStatusMessage({ type: 'success', message: [responseData?.message || 'Usuario creado con éxito.'] });
+        setFormData(prev => ({ ...prev, userName: '', email: '', password: '' }));
+        validatePassword(''); // Reset validación
+      } else if (responseData) {
         let errors: string[] = [];
+        
         if (responseData.errors && Array.isArray(responseData.errors)) {
-             // Errores de Identity o Bad Request devueltos por la API
-             errors = responseData.errors; 
-        } else if (responseData.message) {
-            // Mensaje de error general de la API
+          errors = responseData.errors.map(err => {
+            if (typeof err === 'string') {
+              return err;
+            } else if (err.description) {
+              return err.description;
+            } else if (err.errorMessage) {
+              return err.errorMessage;
+            }
+            return JSON.stringify(err);
+          });
+        } 
+        else if (responseData.message) {
             errors = [responseData.message];
-        } else {
-            // Fallback para errores de validación complejos o no estándar
-            errors = ['Error de validación. Revise los datos.'];
+        } 
+        else {
+            errors = [`Fallo en la creación (Código: ${response.status})`];
         }
         
         setStatusMessage({ type: 'error', message: errors });
 
       } else {
-        // Otros errores HTTP (401, 500)
-        throw new Error(responseData.message || `Fallo en la creación (Código: ${response.status})`);
+        throw new Error(`Fallo en la creación (Código: ${response.status})`);
       }
     } catch (err: any) {
       console.error("Error al crear usuario:", err);
-      setStatusMessage({ type: 'error', message: [err.message || 'Error de conexión con el servicio.'] });
+      setStatusMessage({ type: 'error', message: [err.message || 'Error de conexión con el servicio de creación.'] });
     } finally {
       setLoading(false);
     }
   };
+
+  // Renderizado
+  if (rolesLoading) {
+    return <div className="create-user-container loading">Cargando roles disponibles...</div>;
+  }
+
+  if (rolesError) {
+    return (
+        <div className="create-user-container">
+            <h2 className="create-title">Crear Nuevo Usuario</h2>
+            <div className="status-message error">{rolesError}</div>
+            <button onClick={() => navigate('/gestion-usuarios')} className="back-btn">Volver a Gestión</button>
+        </div>
+    );
+  }
 
   return (
     <div className="create-user-container">
@@ -97,7 +209,7 @@ export const CrearUsuario = () => {
 
       <form onSubmit={handleSubmit} className="creation-form">
         
-        {/* 1. Nombre de Usuario */}
+        {/* Nombre de Usuario */}
         <div className="form-group">
           <label htmlFor="userName">Nombre de Usuario:</label>
           <input
@@ -111,7 +223,7 @@ export const CrearUsuario = () => {
           />
         </div>
 
-        {/* 2. Email */}
+        {/* Email */}
         <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input
@@ -125,21 +237,46 @@ export const CrearUsuario = () => {
           />
         </div>
 
-        {/* 3. Contraseña */}
+       {/* Contraseña */}
         <div className="form-group">
           <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-            disabled={loading}
-          />
+          <div className="input-with-icon">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+              disabled={loading}
+              placeholder="Introduce una contraseña segura"
+            />
+            <span className="info-icon" title="Ver requisitos">ℹ️
+              <div className="password-tooltip">
+                <strong>La contraseña debe contener:</strong>
+                <ul>
+                  <li className={passwordValidation.minLength ? 'valid' : ''}>
+                    {passwordValidation.minLength ? '✓' : '○'} Mínimo 8 caracteres
+                  </li>
+                  <li className={passwordValidation.hasUppercase ? 'valid' : ''}>
+                    {passwordValidation.hasUppercase ? '✓' : '○'} Al menos una letra mayúscula (A-Z)
+                  </li>
+                  <li className={passwordValidation.hasLowercase ? 'valid' : ''}>
+                    {passwordValidation.hasLowercase ? '✓' : '○'} Al menos una letra minúscula (a-z)
+                  </li>
+                  <li className={passwordValidation.hasDigit ? 'valid' : ''}>
+                    {passwordValidation.hasDigit ? '✓' : '○'} Al menos un número (0-9)
+                  </li>
+                  <li className={passwordValidation.hasSpecialChar ? 'valid' : ''}>
+                    {passwordValidation.hasSpecialChar ? '✓' : '○'} Al menos un carácter especial (!@#$%^&*)
+                  </li>
+                </ul>
+              </div>
+            </span>
+          </div>
         </div>
 
-        {/* 4. Rol */}
+        {/* Rol */}
         <div className="form-group">
           <label htmlFor="rolName">Rol:</label>
           <select
@@ -148,15 +285,19 @@ export const CrearUsuario = () => {
             value={formData.rolName}
             onChange={handleInputChange}
             required
-            disabled={loading}
+            disabled={loading || availableRoles.length === 0}
           >
-            {AVAILABLE_ROLES.map(role => (
-              <option key={role} value={role}>{role}</option>
-            ))}
+            {availableRoles.length > 0 ? (
+                availableRoles.map(role => (
+                    <option key={role} value={role}>{role}</option>
+                ))
+            ) : (
+                <option value="" disabled>No hay roles disponibles</option>
+            )}
           </select>
         </div>
 
-        {/* 5. Mensaje de Estado */}
+        {/* Mensaje de Estado */}
         {statusMessage && (
           <div className={`status-message ${statusMessage.type}`}>
             {statusMessage.message.map((msg, index) => (
@@ -165,8 +306,8 @@ export const CrearUsuario = () => {
           </div>
         )}
 
-        {/* 6. Botón de Envío */}
-        <button type="submit" className="submit-btn" disabled={loading}>
+        {/* Botón de Envío */}
+        <button type="submit" className="submit-btn" disabled={loading || availableRoles.length === 0}>
           {loading ? 'Creando...' : 'Crear Usuario'}
         </button>
       </form>

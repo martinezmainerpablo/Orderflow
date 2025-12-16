@@ -40,6 +40,7 @@ var identityService= builder.AddProject<Projects.Orderflow_Identity>("orderflow-
     .WithReference(identitydb)
     .WithReference(rabbit);    //referencia a la base de datos
 
+
 builder.AddProject<Projects.Orderflow_Notification>("orderflow-notification")
     .WaitFor(rabbit)
     .WithEnvironment("Email__SmtpHost", mailService.GetEndpoint("smtp").Property(EndpointProperty.Host))

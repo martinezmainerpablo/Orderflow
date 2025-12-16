@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './DetalleUsuario.css';
 
-const API_BASE_URL = 'https://localhost:7058/api/usersadmin'; // Base de la ruta del controlador
+const API_BASE_URL = 'https://localhost:7058/api/usersadmin';
+const API_ROLES_URL = 'https://localhost:7058/api/roles/all';
+const API_UPDATE_ROLE_URL = 'https://localhost:7058/api/usersadmin/RemoveRol';
 
 interface UserDetail {
     id: string;
@@ -11,12 +13,20 @@ interface UserDetail {
     roles: string[];
 }
 
+interface RoleResponse {
+    id: string;
+    name: string;
+}
+
 export const DetalleUsuario = () => {
-    // Obtener el 'id' de la URL (ruta dinámica)
     const { id } = useParams<{ id: string }>(); 
     const [user, setUser] = useState<UserDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showRoleModal, setShowRoleModal] = useState(false);
+    const [availableRoles, setAvailableRoles] = useState<string[]>([]);
+    const [selectedRole, setSelectedRole] = useState<string>('');
+    const [isChangingRole, setIsChangingRole] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,7 +44,6 @@ export const DetalleUsuario = () => {
             }
 
             try {
-                // 🔗 La llamada a la API utiliza el ID de la URL
                 const response = await fetch(`${API_BASE_URL}/${id}`, { 
                     method: 'GET',
                     headers: {
@@ -61,20 +70,106 @@ export const DetalleUsuario = () => {
         };
 
         fetchUserDetail();
-    }, [id, navigate]); // Dependencia del ID para recargar si cambia
+    }, [id, navigate]);
 
-    // 🆕 FUNCIÓN PARA ACTUALIZAR DATOS
     const handleUpdateData = () => {
-        // En el futuro, esto podría abrir un modal o navegar a una página de edición.
-        alert(`Simulación: Abrir formulario para actualizar datos de ${user?.userName}`);
-        // navigate(`/gestion-usuarios/editar/${user?.id}`);
+            
+            if (id) {
+                navigate(`/gestion-usuarios/actualizar/${id}`); 
+            } else {
+                alert('Error: ID de usuario no disponible para la actualización.');
+            }
+        };
+
+    const openRoleModal = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await fetch(API_ROLES_URL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cargar roles');
+            }
+
+            const data: RoleResponse[] = await response.json();
+            const roleNames = data.map(r => r.name);
+            setAvailableRoles(roleNames);
+            
+            // Seleccionar el rol actual por defecto
+            if (user?.roles && user.roles.length > 0) {
+                setSelectedRole(user.roles[0]);
+            } else if (roleNames.length > 0) {
+                setSelectedRole(roleNames[0]);
+            }
+            
+            setShowRoleModal(true);
+        } catch (err: any) {
+            console.error("Error al cargar roles:", err);
+            alert('Error al cargar los roles disponibles');
+        }
     };
 
-    // 🆕 FUNCIÓN PARA CAMBIAR ROL
-    const handleChangeRole = () => {
-        // En el futuro, esto abrirá un modal con un selector de rol
-        alert(`Simulación: Abrir selector para cambiar el rol de ${user?.userName}`);
+    const closeRoleModal = () => {
+        setShowRoleModal(false);
+        setSelectedRole('');
     };
+
+const confirmChangeRole = async () => {
+  if (!user || !selectedRole) return;
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    navigate('/login');
+    return;
+  }
+
+  setIsChangingRole(true);
+
+  try {
+    console.log('🔍 Cambiando rol a:', selectedRole);
+    console.log('🔍 URL:', `${API_UPDATE_ROLE_URL}/${id}`);
+    
+    const response = await fetch(`${API_UPDATE_ROLE_URL}/${id}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ rolName: selectedRole }),
+    });
+
+    console.log('🔍 Response Status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log('🔍 Error Response:', errorText);
+      throw new Error(`Error al cambiar el rol: ${errorText}`);
+    }
+
+    const result = await response.text();
+    console.log('✅ Success:', result);
+
+    // Actualizar el estado local
+    setUser(prevUser => prevUser ? { ...prevUser, roles: [selectedRole] } : null);
+    
+    closeRoleModal();
+  } catch (err: any) {
+    console.error("❌ Error completo:", err);
+    alert(`Error: ${err.message || 'No se pudo cambiar el rol'}`);
+  } finally {
+    setIsChangingRole(false);
+  }
+};
 
     if (loading) {
         return <div className="user-detail-container loading">Cargando detalles del usuario...</div>;
@@ -90,7 +185,6 @@ export const DetalleUsuario = () => {
         );
     }
 
-    // Se asume que user existe aquí
     return (
         <div className="user-detail-container">
             <h2 className="detail-title">Detalles del Usuario</h2>
@@ -130,7 +224,7 @@ export const DetalleUsuario = () => {
                         Actualizar Datos
                     </button>
                     <button 
-                        onClick={handleChangeRole} 
+                        onClick={openRoleModal} 
                         className="action-btn role-btn"
                         title="Asignar un rol diferente al usuario"
                     >
@@ -138,6 +232,62 @@ export const DetalleUsuario = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Modal de Cambiar Rol */}
+            {showRoleModal && (
+                <div className="modal-overlay" onClick={closeRoleModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>🔄 Cambiar Rol de Usuario</h3>
+                        </div>
+                        <div className="modal-body">
+                            <p>Selecciona el nuevo rol para <strong>{user?.userName}</strong>:</p>
+                            
+                            <div className="current-role-info">
+                                <span>Rol actual: </span>
+                                {user?.roles.map(role => (
+                                    <span key={role} className={`role-badge role-${role.toLowerCase()}`}>
+                                        {role}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div className="role-select-group">
+                                <label htmlFor="roleSelect">Nuevo Rol:</label>
+                                <select
+                                    id="roleSelect"
+                                    value={selectedRole}
+                                    onChange={(e) => setSelectedRole(e.target.value)}
+                                    disabled={isChangingRole}
+                                    className="role-select"
+                                >
+                                    {availableRoles.map(role => (
+                                        <option key={role} value={role}>
+                                            {role}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button 
+                                className="modal-btn cancel-btn" 
+                                onClick={closeRoleModal}
+                                disabled={isChangingRole}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                className="modal-btn confirm-btn" 
+                                onClick={confirmChangeRole}
+                                disabled={isChangingRole}
+                            >
+                                {isChangingRole ? 'Cambiando...' : 'Confirmar Cambio'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

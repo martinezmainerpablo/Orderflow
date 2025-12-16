@@ -17,7 +17,7 @@
                 options.AddPolicy("admin", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Admin");
+                    policy.RequireRole("Admin", "Administrator");
                 });
 
                 // Customer role required
