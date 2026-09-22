@@ -17,6 +17,8 @@ export const Index = () => {
     // Verificar si hay usuario logueado
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
+    
+    console.log("Este es el token:" , token)
 
     if (!token || !userData) {
       navigate('/login');

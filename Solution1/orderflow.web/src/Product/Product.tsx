@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { UpdateStockModal } from './UpdateStockModal';
+import { UpdatePriceModal } from './UpdatePriceModal';
 import './Product.css';
 
 interface ProductListResponse {
@@ -22,48 +24,52 @@ export const Products = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<ProductListResponse | null>(null);
+    const [isStockModalOpen, setIsStockModalOpen] = useState(false);
+    const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
+    
     const navigate = useNavigate();
     const { addToCart, getTotalItems } = useCart();
+
+    const fetchProducts = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await fetch('https://localhost:7058/api/v1/products/getall/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.status === 404) {
+                setError('No hay productos disponibles.');
+                setProducts([]);
+            } else if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Fallo al cargar productos: ${errorText || response.statusText}`);
+            } else {
+                const data: ProductListResponse[] = await response.json();
+                setProducts(data);
+            }
+        } catch (err: any) {
+            console.error("Error al obtener productos:", err);
+            setError(err.message || 'Error de conexión con el servicio.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) {
             setUser(JSON.parse(userData));
         }
-
-        const fetchProducts = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
-            try {
-                const response = await fetch('https://localhost:7058/api/v1/products/getall/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.status === 404) {
-                    setError('No hay productos disponibles.');
-                    setProducts([]);
-                } else if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Fallo al cargar productos: ${errorText || response.statusText}`);
-                } else {
-                    const data: ProductListResponse[] = await response.json();
-                    setProducts(data);
-                }
-            } catch (err: any) {
-                console.error("Error al obtener productos:", err);
-                setError(err.message || 'Error de conexión con el servicio.');
-            } finally {
-                setLoading(false);
-            }
-        };
 
         fetchProducts();
     }, [navigate]);
@@ -74,20 +80,46 @@ export const Products = () => {
         ) || false;
     };
 
-    const handleCreateProduct = () => {
-        console.log('Crear producto');
-    };
-
     const handleCreateCategory = () => {
-        console.log('Crear categoría');
+        console.log('Navegando a la creación de categoría...');
+        navigate('/crear-categoria');
     };
 
-    const handleUpdateStock = (productId: string) => {
-        console.log('Actualizar stock del producto:', productId);
+    const handleCreateProduct = () => {
+        console.log('Navegando a la creación de producto...');
+        navigate('/crear-producto');
     };
 
-    const handleUpdatePrice = (productId: string) => {
-        console.log('Actualizar precio del producto:', productId);
+    const handleUpdateStock = (product: ProductListResponse) => {
+        setSelectedProduct(product);
+        setIsStockModalOpen(true);
+    };
+
+    const handleCloseStockModal = () => {
+        setIsStockModalOpen(false);
+        setSelectedProduct(null);
+    };
+
+    const handleStockUpdated = () => {
+        // Recargar productos después de actualizar
+        setLoading(true);
+        fetchProducts();
+    };
+
+    const handleUpdatePrice = (product: ProductListResponse) => {
+        setSelectedProduct(product);
+        setIsPriceModalOpen(true);
+    };
+
+    const handleClosePriceModal = () => {
+        setIsPriceModalOpen(false);
+        setSelectedProduct(null);
+    };
+
+    const handlePriceUpdated = () => {
+        // Recargar productos después de actualizar
+        setLoading(true);
+        fetchProducts();
     };
 
     const handleAddToCart = (product: ProductListResponse) => {
@@ -116,7 +148,6 @@ export const Products = () => {
                         Volver al Inicio
                     </button>
                     
-                    {/* Botón de carrito solo para Users */}
                     {!isAdmin() && (
                         <button onClick={() => navigate('/cart')} className="cart-badge-btn">
                             🛒 Carrito ({getTotalItems()})
@@ -148,13 +179,13 @@ export const Products = () => {
                             {isAdmin() ? (
                                 <>
                                     <button 
-                                        onClick={() => handleUpdateStock(product.id)} 
+                                        onClick={() => handleUpdateStock(product)} 
                                         className="action-btn stock-btn"
                                     >
                                         📦 Actualizar Stock
                                     </button>
                                     <button 
-                                        onClick={() => handleUpdatePrice(product.id)} 
+                                        onClick={() => handleUpdatePrice(product)} 
                                         className="action-btn price-btn"
                                     >
                                         💰 Actualizar Precio
@@ -176,6 +207,29 @@ export const Products = () => {
 
             {products.length === 0 && !error && (
                 <p className="no-products">No hay productos disponibles en este momento.</p>
+            )}
+
+            {/* Modal de actualización de stock */}
+            {selectedProduct && (
+                <>
+                    <UpdateStockModal
+                        isOpen={isStockModalOpen}
+                        onClose={handleCloseStockModal}
+                        productId={selectedProduct.id}
+                        productName={selectedProduct.name}
+                        currentStock={selectedProduct.stock}
+                        onStockUpdated={handleStockUpdated}
+                    />
+                    
+                    <UpdatePriceModal
+                        isOpen={isPriceModalOpen}
+                        onClose={handleClosePriceModal}
+                        productId={selectedProduct.id}
+                        productName={selectedProduct.name}
+                        currentPrice={selectedProduct.price}
+                        onPriceUpdated={handlePriceUpdated}
+                    />
+                </>
             )}
         </div>
     );
